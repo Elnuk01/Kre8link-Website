@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-main: #F8FAF9;
+    --brand-orange: #F05323;
+    --brand-orange-hover: #D94418;
+    --brand-orange-glow: rgba(240, 83, 35, 0.15);
+    --brand-teal: #0A292C;
+    --brand-teal-light: #133E42;
+  }
+
+  body {
+    background-color: #F8FAF9;
+    color: #0F172A;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Inter', 'Geist', 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
+    selection-background-color: rgba(240, 83, 35, 0.2);
+    selection-color: #0A292C;
+  }
+}
+
+/* Subtle bright off-white grid pattern */
+.bg-grid-pattern {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(10, 41, 44, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(10, 41, 44, 0.04) 1px, transparent 1px);
+}
+
+.bg-radial-glow {
+  background: radial-gradient(circle at 50% 20%, rgba(240, 83, 35, 0.08) 0%, rgba(248, 250, 249, 0) 70%);
+}
+
+.bg-orange-radial-subtle {
+  background: radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), rgba(240, 83, 35, 0.06), transparent 40%);
+}
+
+/* Custom glow & shadow effects */
+.orange-border-glow {
+  box-shadow: 0 0 20px -5px rgba(240, 83, 35, 0.25);
+}
+
+.card-soft-shadow {
+  box-shadow: 0 4px 20px -2px rgba(10, 41, 44, 0.05), 0 2px 6px -1px rgba(10, 41, 44, 0.03);
+}
+
+.card-hover-shadow {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-hover-shadow:hover {
+  box-shadow: 0 12px 32px -4px rgba(10, 41, 44, 0.08), 0 4px 12px -2px rgba(240, 83, 35, 0.06);
+  transform: translateY(-2px);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F4;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  body * {
+    visibility: hidden;
+  }
+  .print-container, .print-container * {
+    visibility: visible;
+  }
+  .print-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+    box-shadow: none !important;
+    border: none !important;
+    background: #ffffff !important;
+  }
+  .print\:hidden {
+    display: none !important;
+  }
+}
