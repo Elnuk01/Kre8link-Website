@@ -68,30 +68,76 @@
   background: #94A3B8;
 }
 
-/* Print Styles */
+/* Optimized Print / PDF Styles for A4 */
+@page {
+  size: A4 portrait;
+  margin: 12mm 12mm;
+}
+
 @media print {
-  body {
+  html, body {
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
     background: #ffffff !important;
     color: #000000 !important;
+    overflow: visible !important;
   }
-  body * {
-    visibility: hidden;
+
+  /* Hide all top-level body children by default so they don't take up layout space */
+  body > * {
+    display: none !important;
   }
-  .print-container, .print-container * {
-    visibility: visible;
-  }
-  .print-container {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    margin: 0;
-    padding: 1rem;
+
+  /* Only display the active modal wrapper containing the printable report */
+  body > div:has(.print-container),
+  .print-modal-overlay {
+    display: block !important;
+    position: static !important;
+    inset: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
     box-shadow: none !important;
-    border: none !important;
-    background: #ffffff !important;
+    overflow: visible !important;
+    width: 100% !important;
+    height: auto !important;
   }
+
+  .print-container {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    overflow: visible !important;
+  }
+
+  /* Force elements with print:hidden to disappear */
   .print\:hidden {
     display: none !important;
+  }
+
+  /* Ensure cards stay intact across page breaks */
+  .page-break-inside-avoid,
+  .print-card {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Optimize padding and typography for PDF */
+  .print-container h1,
+  .print-container h2,
+  .print-container h3,
+  .print-container h4 {
+    color: #0A292C !important;
   }
 }

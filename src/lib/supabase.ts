@@ -54,6 +54,20 @@ function generateUUID(): string {
   });
 }
 
+// Safe diagnostic logging helper (never logs tokens, passwords or secrets)
+function logInsertDiagnostic(tableName: string, data: any, error: any) {
+  const hasReturnedData = Boolean(
+    data && (Array.isArray(data) ? data.length > 0 : Object.keys(data).length > 0)
+  );
+  const errorCode = error?.code || 'NONE';
+  const errorMessage = error?.message || 'NONE';
+  const errorDetails = error?.details || 'NONE';
+
+  console.log(
+    `[Supabase INSERT Diagnostic] Table: "${tableName}" | Has Data: ${hasReturnedData} | Error Code: "${errorCode}" | Message: "${errorMessage}" | Details: "${errorDetails}"`
+  );
+}
+
 // ==========================================
 // 1. AUDIT & AI OPPORTUNITIES FLOW
 // ==========================================
@@ -75,11 +89,10 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
   error?: string;
 }> {
   if (!isSupabaseConfigured || !supabase) {
-    console.warn('[Supabase] Client not configured. Operating in offline mode.');
+    console.error('[Supabase Diagnostic] Client not configured. Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY.');
     return {
-      success: true,
-      business_id: generateUUID(),
-      audit_response_id: generateUUID()
+      success: false,
+      error: 'Supabase database is not configured. Please check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY env variables.'
     };
   }
 
@@ -88,7 +101,7 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
     const auditResponseId = generateUUID();
 
     // 1. Create row in `businesses`
-    let { error: busErr } = await supabase
+    let { data: busData, error: busErr } = await supabase
       .from('businesses')
       .insert({
         id: businessId,
@@ -96,27 +109,35 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
         description: payload.business_description.trim(),
         industry: payload.industry || null,
         company_size: payload.company_size || null
-      });
+      })
+      .select();
+
+    logInsertDiagnostic('businesses', busData, busErr);
 
     if (busErr) {
-      console.warn('[Supabase] Detailed businesses insert failed, trying minimal fields:', busErr);
+      console.warn('[Supabase] Detailed businesses insert failed, retrying minimal fields:', busErr.message);
       const retryBus = await supabase
         .from('businesses')
         .insert({
           id: businessId,
           company_name: payload.company_name?.trim() || 'Anonymous Business',
           description: payload.business_description.trim()
-        });
+        })
+        .select();
+
+      logInsertDiagnostic('businesses (retry)', retryBus.data, retryBus.error);
 
       if (retryBus.error) {
         console.error('[Supabase] Error inserting into businesses:', retryBus.error);
-        return { success: false, error: retryBus.error.message || 'Failed to save business info' };
+        return {
+          success: false,
+          error: `Failed to save business info: ${retryBus.error.message || retryBus.error.code}`
+        };
       }
     }
 
     // 2. Create row in `audit_responses`
-    // First attempt without `description` column to match schema where description is in `businesses`
-    let { error: auditErr } = await supabase
+    let { data: auditData, error: auditErr } = await supabase
       .from('audit_responses')
       .insert({
         id: auditResponseId,
@@ -124,7 +145,10 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
         pain_points: payload.pain_points,
         current_tools: payload.current_tools,
         primary_goal: payload.primary_goal
-      });
+      })
+      .select();
+
+    logInsertDiagnostic('audit_responses', auditData, auditErr);
 
     if (auditErr) {
       console.warn('[Supabase] Standard audit_responses insert warning:', auditErr.message);
@@ -139,7 +163,10 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
           pain_points: payload.pain_points,
           current_tools: payload.current_tools,
           primary_goal: payload.primary_goal
-        });
+        })
+        .select();
+
+      logInsertDiagnostic('audit_responses (retry with desc)', retryWithDesc.data, retryWithDesc.error);
 
       if (!retryWithDesc.error) {
         auditErr = null;
@@ -150,12 +177,19 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
           .insert({
             id: auditResponseId,
             business_id: businessId
-          });
+          })
+          .select();
+
+        logInsertDiagnostic('audit_responses (minimal retry)', retryMinimal.data, retryMinimal.error);
 
         if (!retryMinimal.error) {
           auditErr = null;
         } else {
-          console.error('[Supabase] Could not save audit_responses detail row:', retryMinimal.error);
+          console.error('[Supabase] Could not save audit_responses row:', retryMinimal.error);
+          return {
+            success: false,
+            error: `Failed to save audit response: ${retryMinimal.error.message || retryMinimal.error.code}`
+          };
         }
       }
     }
@@ -171,12 +205,15 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
         priority: typeof o.priority === 'number' ? o.priority : (o.priority === 'HIGH' ? 1 : idx + 1)
       }));
 
-      const { error: oppsErr } = await supabase
+      const { data: oppData, error: oppsErr } = await supabase
         .from('ai_opportunities')
-        .insert(oppRows);
+        .insert(oppRows)
+        .select();
+
+      logInsertDiagnostic('ai_opportunities', oppData, oppsErr);
 
       if (oppsErr) {
-        console.warn('[Supabase] Priority int insert failed, trying string format:', oppsErr);
+        console.warn('[Supabase] Priority int insert failed, trying string format:', oppsErr.message);
         const stringOppRows = payload.opportunities.map((o) => ({
           id: generateUUID(),
           audit_response_id: auditResponseId,
@@ -185,12 +222,19 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
           impact: o.impact,
           priority: String(o.priority || 'HIGH')
         }));
-        const { error: retryErr } = await supabase
+        const { data: retryOppData, error: retryErr } = await supabase
           .from('ai_opportunities')
-          .insert(stringOppRows);
+          .insert(stringOppRows)
+          .select();
+
+        logInsertDiagnostic('ai_opportunities (string priority retry)', retryOppData, retryErr);
 
         if (retryErr) {
           console.error('[Supabase] Error saving opportunities:', retryErr);
+          return {
+            success: false,
+            error: `Failed to save AI opportunities: ${retryErr.message || retryErr.code}`
+          };
         }
       }
     }
@@ -221,37 +265,51 @@ export async function submitLead(payload: LeadSubmissionPayload): Promise<{
   error?: string;
 }> {
   if (!isSupabaseConfigured || !supabase) {
-    console.warn('[Supabase] Client not configured. Lead saved locally.');
-    return { success: true };
+    console.error('[Supabase Diagnostic] Client not configured. Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY.');
+    return {
+      success: false,
+      error: 'Supabase database is not configured. Please check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY env variables.'
+    };
   }
 
   try {
-    let { error } = await supabase.from('leads').insert({
-      id: generateUUID(),
-      business_id: payload.business_id || null,
-      name: payload.name.trim(),
-      email: payload.email.trim(),
-      phone: payload.phone?.trim() || null,
-      source: 'AI Opportunity Scanner'
-    });
-
-    if (error && isJwtError(error)) {
-      console.warn('[Supabase] JWT timing issue in submitLead, retrying...');
-      await new Promise((r) => setTimeout(r, 600));
-      const retry = await supabase.from('leads').insert({
+    let { data: leadData, error } = await supabase
+      .from('leads')
+      .insert({
         id: generateUUID(),
         business_id: payload.business_id || null,
         name: payload.name.trim(),
         email: payload.email.trim(),
         phone: payload.phone?.trim() || null,
         source: 'AI Opportunity Scanner'
-      });
+      })
+      .select();
+
+    logInsertDiagnostic('leads', leadData, error);
+
+    if (error && isJwtError(error)) {
+      console.warn('[Supabase] JWT timing issue in submitLead, retrying...');
+      await new Promise((r) => setTimeout(r, 600));
+      const retry = await supabase
+        .from('leads')
+        .insert({
+          id: generateUUID(),
+          business_id: payload.business_id || null,
+          name: payload.name.trim(),
+          email: payload.email.trim(),
+          phone: payload.phone?.trim() || null,
+          source: 'AI Opportunity Scanner'
+        })
+        .select();
+
+      leadData = retry.data;
       error = retry.error;
+      logInsertDiagnostic('leads (retry)', leadData, error);
     }
 
     if (error) {
       console.error('[Supabase] Error inserting lead:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: error.message || error.code || 'Failed to save lead' };
     }
 
     return { success: true };
@@ -277,37 +335,51 @@ export async function submitContactRequest(payload: ContactRequestPayload): Prom
   error?: string;
 }> {
   if (!isSupabaseConfigured || !supabase) {
-    console.warn('[Supabase] Client not configured. Contact saved locally.');
-    return { success: true };
+    console.error('[Supabase Diagnostic] Client not configured. Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY.');
+    return {
+      success: false,
+      error: 'Supabase database is not configured. Please check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY env variables.'
+    };
   }
 
   try {
-    let { error } = await supabase.from('contact_requests').insert({
-      id: generateUUID(),
-      name: payload.name.trim(),
-      email: payload.email.trim(),
-      company: payload.company?.trim() || null,
-      phone: payload.phone?.trim() || null,
-      message: payload.message?.trim() || null
-    });
-
-    if (error && isJwtError(error)) {
-      console.warn('[Supabase] JWT timing issue in submitContactRequest, retrying...');
-      await new Promise((r) => setTimeout(r, 600));
-      const retry = await supabase.from('contact_requests').insert({
+    let { data: contactData, error } = await supabase
+      .from('contact_requests')
+      .insert({
         id: generateUUID(),
         name: payload.name.trim(),
         email: payload.email.trim(),
         company: payload.company?.trim() || null,
         phone: payload.phone?.trim() || null,
         message: payload.message?.trim() || null
-      });
+      })
+      .select();
+
+    logInsertDiagnostic('contact_requests', contactData, error);
+
+    if (error && isJwtError(error)) {
+      console.warn('[Supabase] JWT timing issue in submitContactRequest, retrying...');
+      await new Promise((r) => setTimeout(r, 600));
+      const retry = await supabase
+        .from('contact_requests')
+        .insert({
+          id: generateUUID(),
+          name: payload.name.trim(),
+          email: payload.email.trim(),
+          company: payload.company?.trim() || null,
+          phone: payload.phone?.trim() || null,
+          message: payload.message?.trim() || null
+        })
+        .select();
+
+      contactData = retry.data;
       error = retry.error;
+      logInsertDiagnostic('contact_requests (retry)', contactData, error);
     }
 
     if (error) {
       console.error('[Supabase] Error inserting contact request:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: error.message || error.code || 'Failed to save contact request' };
     }
 
     return { success: true };

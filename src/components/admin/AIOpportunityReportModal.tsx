@@ -34,7 +34,7 @@ export function AIOpportunityReportModal({ audit, onClose }: AIOpportunityReport
           onClose();
         }
       }}
-      className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto"
+      className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto print-modal-overlay"
     >
       <div className="print-container bg-white text-slate-900 w-full max-w-3xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden my-8 animate-scaleUp relative">
         {/* Top Actions & Banner */}
@@ -179,7 +179,7 @@ export function AIOpportunityReportModal({ audit, onClose }: AIOpportunityReport
                   return (
                     <div
                       key={opp.id ? `modal-opp-${opp.id}` : `modal-opp-idx-${index}`}
-                      className="p-6 bg-slate-50/80 rounded-2xl border border-slate-200/90 space-y-3 relative overflow-hidden"
+                      className="p-6 bg-slate-50/80 rounded-2xl border border-slate-200/90 space-y-3 relative overflow-hidden print-card page-break-inside-avoid"
                     >
                       {/* Top Opp Bar */}
                       <div className="flex items-start justify-between gap-4">
