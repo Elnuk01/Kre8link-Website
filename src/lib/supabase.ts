@@ -1,27 +1,57 @@
 import { createClient } from '@supabase/supabase-js';
 import { AIOpportunity } from '../types';
 
-const supabaseUrl =
+const cleanEnvVar = (val: string | undefined): string => {
+  if (!val || typeof val !== 'string') return '';
+  return val.trim().replace(/^["']|["']$/g, '');
+};
+
+const supabaseUrl = cleanEnvVar(
   import.meta.env.VITE_SUPABASE_URL ||
-  import.meta.env.NEXT_PUBLIC_SUPABASE_URL ||
-  '';
-
-const supabaseAnonKey =
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
-  import.meta.env.VITE_SUPABASE_ANON_KEY ||
-  import.meta.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
-  import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-  '';
-
-export const isSupabaseConfigured = Boolean(
-  supabaseUrl &&
-  supabaseAnonKey &&
-  supabaseUrl !== 'https://your-project.supabase.co'
+  import.meta.env.NEXT_PUBLIC_SUPABASE_URL
 );
+
+const supabaseAnonKey = cleanEnvVar(
+  import.meta.env.VITE_SUPABASE_ANON_KEY ||
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+  import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  import.meta.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+);
+
+const isPlaceholderUrl = (url: string): boolean => {
+  if (!url) return true;
+  const lower = url.toLowerCase();
+  return (
+    lower.includes('your-project.supabase.co') ||
+    lower.includes('your-supabase-url') ||
+    lower === 'https://' ||
+    lower === 'http://'
+  );
+};
+
+const isPlaceholderKey = (key: string): boolean => {
+  if (!key) return true;
+  const lower = key.toLowerCase();
+  return (
+    lower.includes('your-anon-key') ||
+    lower.includes('your-publishable-key') ||
+    lower === 'placeholder'
+  );
+};
+
+const hasValidUrl = Boolean(supabaseUrl && !isPlaceholderUrl(supabaseUrl));
+const hasValidKey = Boolean(supabaseAnonKey && !isPlaceholderKey(supabaseAnonKey));
+
+export const isSupabaseConfigured = Boolean(hasValidUrl && hasValidKey);
 
 export const supabase = isSupabaseConfigured
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null;
+
+// SAFE diagnostic reporting (never exposes key or URL values)
+console.log(`[Supabase Diagnostic] SUPABASE URL PRESENT: ${hasValidUrl}`);
+console.log(`[Supabase Diagnostic] SUPABASE ANON KEY PRESENT: ${hasValidKey}`);
+console.log(`[Supabase Diagnostic] SUPABASE CONFIGURED: ${isSupabaseConfigured}`);
 
 // Helper to identify PostgREST JWT errors (e.g. PGRST303 JWT issued at future)
 export function isJwtError(err: any): boolean {
