@@ -71,22 +71,11 @@
 /* Optimized Print / PDF Styles for A4 */
 @page {
   size: A4 portrait;
-  margin: 12mm 12mm;
+  margin: 12mm 12mm 15mm 12mm;
 }
 
 @media print {
-  html, body {
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #ffffff !important;
-    color: #000000 !important;
-    overflow: visible !important;
-  }
-
-  /* Explicitly hide non-report components and layout wrappers during print */
+  /* Hide all root layout and background elements */
   nav,
   header,
   footer,
@@ -101,42 +90,38 @@
   #technology,
   #about,
   #cta,
-  .print\:hidden {
+  .print\:hidden,
+  button,
+  .fixed:not(.print-modal-overlay) {
     display: none !important;
   }
 
-  /* In Public Website: hide all main sections other than the scanner report */
+  /* Public Website: hide all main landing page siblings of the modal */
   #root > div > *:not(main),
   #root > div > main > *:not(#scanner),
+  #scanner > div:not(.print-modal-overlay):not(:has(.print-modal-overlay)),
   #scanner > div > div:not(:has(.print-container)) {
     display: none !important;
   }
 
-  #scanner {
-    padding: 0 !important;
-    margin: 0 !important;
-    background: transparent !important;
-    border: none !important;
-  }
-
-  #scanner > div {
-    max-width: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  /* In Admin Layout: reset wrapper heights and hide admin navigation */
-  .min-h-screen {
-    min-height: 0 !important;
+  html, body {
+    width: 100% !important;
     height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
     background: #ffffff !important;
+    color: #000000 !important;
+    overflow: visible !important;
+    font-size: 11pt !important;
   }
 
-  /* Reset modal overlay to standard in-flow block element */
+  /* Reset modal overlay to standard top-aligned full document container */
   .print-modal-overlay {
     position: static !important;
     inset: auto !important;
     width: 100% !important;
+    max-width: 100% !important;
     height: auto !important;
     min-height: 0 !important;
     padding: 0 !important;
@@ -149,7 +134,7 @@
     z-index: auto !important;
   }
 
-  /* Reset print container to full-width natural pagination */
+  /* Reset print container to clean printable document */
   .print-container {
     display: block !important;
     position: static !important;
@@ -166,15 +151,15 @@
     page-break-after: auto !important;
   }
 
-  /* Keep individual opportunity cards unified across page breaks */
+  /* Prevent page-break cutting inside opportunity cards */
   .page-break-inside-avoid,
   .print-card {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
-    margin-bottom: 1.5rem !important;
+    margin-bottom: 1.25rem !important;
   }
 
-  /* Optimize typography and contrast for PDF generation */
+  /* Crisp contrast for text */
   .print-container h1,
   .print-container h2,
   .print-container h3,

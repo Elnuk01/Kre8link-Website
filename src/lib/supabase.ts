@@ -278,18 +278,41 @@ export interface LeadSubmissionPayload {
   business_id?: string;
   name: string;
   email: string;
-  phone?: string;
+  phone?: string | null;
 }
 
 export async function submitLead(payload: LeadSubmissionPayload): Promise<{
   success: boolean;
   error?: string;
 }> {
+  const isProd = Boolean(import.meta.env.PROD);
+  let projectHost = 'none';
+  try {
+    if (supabaseUrl) {
+      projectHost = new URL(supabaseUrl).hostname;
+    }
+  } catch {
+    projectHost = 'invalid-url';
+  }
+
   if (!isSupabaseConfigured || !supabase) {
-    console.error('[Supabase Diagnostic] Client not configured. Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY.');
+    console.error('[Lead Submit Diagnostic]', {
+      environment: isProd ? 'production' : 'development',
+      supabaseConfigured: false,
+      supabaseProjectHost: projectHost,
+      businessIdPresent: Boolean(payload.business_id),
+      namePresent: Boolean(payload.name),
+      emailPresent: Boolean(payload.email),
+      phonePresent: Boolean(payload.phone),
+      insertAttempted: false,
+      insertSucceeded: false,
+      errorCode: 'NOT_CONFIGURED',
+      errorMessage: 'Missing Supabase environment variables'
+    });
+
     return {
       success: false,
-      error: 'Supabase database is not configured. Please check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY env variables.'
+      error: 'Supabase database is not configured. Please verify environment variables.'
     };
   }
 
@@ -305,7 +328,29 @@ export async function submitLead(payload: LeadSubmissionPayload): Promise<{
         source: 'AI Opportunity Scanner'
       });
 
-    logInsertDiagnostic('leads', error);
+    // Detailed safe diagnostics (never exposes keys, tokens or passwords)
+    console.log('[Lead Submit Diagnostic]', {
+      environment: isProd ? 'production' : 'development',
+      supabaseConfigured: true,
+      supabaseProjectHost: projectHost,
+      businessIdPresent: Boolean(payload.business_id),
+      namePresent: Boolean(payload.name),
+      emailPresent: Boolean(payload.email),
+      phonePresent: Boolean(payload.phone),
+      insertAttempted: true,
+      insertSucceeded: !error,
+      errorCode: error?.code || 'NONE',
+      errorMessage: error?.message || 'NONE'
+    });
+
+    if (error) {
+      console.log('[Lead Submit Error Details]', {
+        code: error.code,
+        message: error.message,
+        details: error.details || 'NONE',
+        hint: error.hint || 'NONE'
+      });
+    }
 
     if (error && (error.code === 'PGRST204' || isJwtError(error))) {
       if (isJwtError(error)) {
@@ -330,7 +375,10 @@ export async function submitLead(payload: LeadSubmissionPayload): Promise<{
 
     if (error) {
       console.error('[Supabase] Error inserting lead:', error);
-      return { success: false, error: error.message || error.code || 'Unable to save lead contact details' };
+      return {
+        success: false,
+        error: error.message || error.code || 'Unable to save lead contact details'
+      };
     }
 
     return { success: true };

@@ -77,6 +77,7 @@ export interface ContactRequest {
 
 export interface ScannerInput {
   description: string;
+  industry?: string;
   departments: string[];
   tools: string[];
   goals: string[];

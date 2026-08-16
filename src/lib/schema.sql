@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS contact_requests (
 -- Add status column if table already exists
 ALTER TABLE contact_requests ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'new';
 
--- Enable RLS (Row Level Security) - allow anonymous insert for audit scanner
+-- Enable RLS (Row Level Security) - allow anonymous and public insert for audit scanner
 ALTER TABLE businesses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE leads ENABLE ROW LEVEL SECURITY;
 ALTER TABLE audit_responses ENABLE ROW LEVEL SECURITY;
@@ -90,12 +90,27 @@ ALTER TABLE ai_opportunities ENABLE ROW LEVEL SECURITY;
 ALTER TABLE contact_requests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE lead_activities ENABLE ROW LEVEL SECURITY;
 
--- Allow public insert policies
-CREATE POLICY "Allow public insert to businesses" ON businesses FOR INSERT WITH CHECK (true);
-CREATE POLICY "Allow public insert to leads" ON leads FOR INSERT WITH CHECK (true);
-CREATE POLICY "Allow public insert to audit_responses" ON audit_responses FOR INSERT WITH CHECK (true);
-CREATE POLICY "Allow public insert to ai_opportunities" ON ai_opportunities FOR INSERT WITH CHECK (true);
-CREATE POLICY "Allow public insert to contact_requests" ON contact_requests FOR INSERT WITH CHECK (true);
+-- 1. Clean up existing INSERT policies before re-creating
+DROP POLICY IF EXISTS "Allow public insert to businesses" ON businesses;
+DROP POLICY IF EXISTS "Allow public insert to leads" ON leads;
+DROP POLICY IF EXISTS "Allow public insert to audit_responses" ON audit_responses;
+DROP POLICY IF EXISTS "Allow public insert to ai_opportunities" ON ai_opportunities;
+DROP POLICY IF EXISTS "Allow public insert to contact_requests" ON contact_requests;
+
+-- Allow public insert policies (for both anon visitors and authenticated users)
+CREATE POLICY "Allow public insert to businesses" ON businesses FOR INSERT TO anon, authenticated WITH CHECK (true);
+CREATE POLICY "Allow public insert to leads" ON leads FOR INSERT TO anon, authenticated WITH CHECK (true);
+CREATE POLICY "Allow public insert to audit_responses" ON audit_responses FOR INSERT TO anon, authenticated WITH CHECK (true);
+CREATE POLICY "Allow public insert to ai_opportunities" ON ai_opportunities FOR INSERT TO anon, authenticated WITH CHECK (true);
+CREATE POLICY "Allow public insert to contact_requests" ON contact_requests FOR INSERT TO anon, authenticated WITH CHECK (true);
+
+-- 2. Clean up existing SELECT policies before re-creating
+DROP POLICY IF EXISTS "Allow authenticated admin select on businesses" ON businesses;
+DROP POLICY IF EXISTS "Allow authenticated admin select on leads" ON leads;
+DROP POLICY IF EXISTS "Allow authenticated admin select on audit_responses" ON audit_responses;
+DROP POLICY IF EXISTS "Allow authenticated admin select on ai_opportunities" ON ai_opportunities;
+DROP POLICY IF EXISTS "Allow authenticated admin select on contact_requests" ON contact_requests;
+DROP POLICY IF EXISTS "Allow authenticated admin select on lead_activities" ON lead_activities;
 
 -- Allow authenticated admin SELECT policies
 CREATE POLICY "Allow authenticated admin select on businesses" ON businesses FOR SELECT TO authenticated USING (true);
@@ -104,6 +119,12 @@ CREATE POLICY "Allow authenticated admin select on audit_responses" ON audit_res
 CREATE POLICY "Allow authenticated admin select on ai_opportunities" ON ai_opportunities FOR SELECT TO authenticated USING (true);
 CREATE POLICY "Allow authenticated admin select on contact_requests" ON contact_requests FOR SELECT TO authenticated USING (true);
 CREATE POLICY "Allow authenticated admin select on lead_activities" ON lead_activities FOR SELECT TO authenticated USING (true);
+
+-- 3. Clean up existing UPDATE & INSERT policies before re-creating
+DROP POLICY IF EXISTS "Allow authenticated admin update on leads" ON leads;
+DROP POLICY IF EXISTS "Allow authenticated admin update on contact_requests" ON contact_requests;
+DROP POLICY IF EXISTS "Allow authenticated admin insert on lead_activities" ON lead_activities;
+DROP POLICY IF EXISTS "Allow authenticated admin update on lead_activities" ON lead_activities;
 
 -- Allow authenticated admin UPDATE & INSERT policies
 CREATE POLICY "Allow authenticated admin update on leads" ON leads FOR UPDATE TO authenticated USING (true) WITH CHECK (true);

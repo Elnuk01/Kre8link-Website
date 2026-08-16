@@ -1,8 +1,59 @@
 import { AIOpportunity, ScannerInput } from '../types';
 
 export function calculateOpportunities(input: ScannerInput): AIOpportunity[] {
-  const { departments, tools, goals } = input;
+  const { departments, tools, goals, industry } = input;
   const opps: AIOpportunity[] = [];
+
+  // Industry-specific smart matching
+  if (industry) {
+    const indLower = industry.toLowerCase();
+    if (indLower.includes('logistics') || indLower.includes('supply chain') || indLower.includes('transport')) {
+      opps.push({
+        title: 'Intelligent Dispatch & Order Tracking AI',
+        description: 'Automate shipment tracking updates, proof-of-delivery ingestion, and proactive driver/customer dispatch notifications.',
+        impact: 'HIGH',
+        priority: 'HIGH',
+        estimatedHoursSaved: '16–24 hrs/week',
+        suggestedTech: ['Tracking Webhooks', 'Automated SMS/WhatsApp', 'Route Optimizer']
+      });
+    } else if (indLower.includes('e-commerce') || indLower.includes('retail')) {
+      opps.push({
+        title: 'Omnichannel Order & Inventory Assistant',
+        description: 'Synchronize inventory levels, automate return/exchange workflows, and handle post-purchase inquiries autonomously.',
+        impact: 'HIGH',
+        priority: 'HIGH',
+        estimatedHoursSaved: '14–20 hrs/week',
+        suggestedTech: ['Storefront API', 'Inventory Connector', 'Return Assistant']
+      });
+    } else if (indLower.includes('healthcare') || indLower.includes('medical') || indLower.includes('clinic')) {
+      opps.push({
+        title: 'Automated Patient Intake & Appointment Assistant',
+        description: 'Streamline patient pre-registration, automated appointment reminders, intake form parsing, and reschedule handling.',
+        impact: 'HIGH',
+        priority: 'HIGH',
+        estimatedHoursSaved: '15–20 hrs/week',
+        suggestedTech: ['HIPAA-Ready Gateways', 'Calendar Sync', 'Intake Parser']
+      });
+    } else if (indLower.includes('real estate') || indLower.includes('property')) {
+      opps.push({
+        title: 'Property Inquiry & Showing Qualifier',
+        description: 'Instantly respond to tenant and buyer inquiries, pre-qualify showing requests, and schedule property viewings 24/7.',
+        impact: 'HIGH',
+        priority: 'HIGH',
+        estimatedHoursSaved: '12–18 hrs/week',
+        suggestedTech: ['Listing Bot', 'Calendar Booker', 'Lead Pipeline']
+      });
+    } else if (indLower.includes('finance') || indLower.includes('fintech') || indLower.includes('accounting')) {
+      opps.push({
+        title: 'Automated Invoicing & Reconciliation Assistant',
+        description: 'Extract invoice data from PDFs/emails, perform automatic 3-way matching, and notify team of payment discrepancies.',
+        impact: 'HIGH',
+        priority: 'HIGH',
+        estimatedHoursSaved: '14–20 hrs/week',
+        suggestedTech: ['Document AI', 'Bank Feeds', 'Reconciliation Rules']
+      });
+    }
+  }
 
   // 1. Customer Service
   if (

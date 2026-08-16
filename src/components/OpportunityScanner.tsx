@@ -18,6 +18,8 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
 
   // Form State
   const [companyName, setCompanyName] = useState<string>('');
+  const [industry, setIndustry] = useState<string>('');
+  const [customIndustry, setCustomIndustry] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [selectedDepts, setSelectedDepts] = useState<string[]>([]);
   const [selectedTools, setSelectedTools] = useState<string[]>([]);
@@ -38,6 +40,33 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
   const [leadSubmitting, setLeadSubmitting] = useState<boolean>(false);
   const [leadSubmitted, setLeadSubmitted] = useState<boolean>(false);
   const [leadError, setLeadError] = useState<string | null>(null);
+
+  const industryOptions = [
+    'E-commerce & Retail',
+    'Logistics & Supply Chain',
+    'Professional Services & Consulting',
+    'Healthcare & Medical',
+    'Real Estate & Property',
+    'Financial Services & Fintech',
+    'Technology & Software',
+    'Hospitality & Tourism',
+    'Manufacturing & Industrial',
+    'Construction & Trades',
+    'Legal & Compliance',
+    'Education & Training',
+    'Marketing & Media',
+    'Other'
+  ];
+
+  const popularIndustries = [
+    'E-commerce & Retail',
+    'Logistics & Supply Chain',
+    'Professional Services',
+    'Healthcare & Medical',
+    'Real Estate',
+    'Financial Services',
+    'Technology & Software'
+  ];
 
   const deptOptions = ['Customer service', 'Sales', 'Operations', 'Finance', 'Marketing', 'Reporting', 'Other'];
   const toolOptions = ['WhatsApp', 'Email', 'Excel', 'Google Sheets', 'CRM', 'Accounting software', 'Website', 'Other'];
@@ -76,6 +105,10 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
       return;
     }
 
+    const resolvedIndustry = industry === 'Other'
+      ? (customIndustry.trim() || 'Other')
+      : (industry.trim() || undefined);
+
     setErrorMessage(null);
     setLoading(true);
     setStep(5);
@@ -83,6 +116,7 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
     // Generate rule-based AI opportunities matching prompt criteria
     const localOpps = calculateOpportunities({
       description,
+      industry: resolvedIndustry,
       departments: selectedDepts,
       tools: selectedTools,
       goals: selectedGoals
@@ -94,6 +128,7 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
     try {
       const res = await submitOpportunityAudit({
         company_name: companyName,
+        industry: resolvedIndustry,
         business_description: description,
         pain_points: selectedDepts,
         current_tools: selectedTools,
@@ -139,11 +174,17 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
       if (res.success) {
         setLeadSubmitted(true);
       } else {
-        setLeadError(res.error || 'Unable to save your contact details. Please try again.');
+        const detailMsg = res.error
+          ? `Your AI opportunity report was generated, but we couldn't save your contact details (${res.error}). Please try again.`
+          : "Your AI opportunity report was generated, but we couldn't save your contact details. Please try again.";
+        setLeadError(detailMsg);
       }
     } catch (err: any) {
       console.error('[Lead] Error:', err);
-      setLeadError(err?.message || 'Unable to save your contact details. Please try again.');
+      const detailMsg = err?.message
+        ? `Your AI opportunity report was generated, but we couldn't save your contact details (${err.message}). Please try again.`
+        : "Your AI opportunity report was generated, but we couldn't save your contact details. Please try again.";
+      setLeadError(detailMsg);
     } finally {
       setLeadSubmitting(false);
     }
@@ -157,6 +198,8 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
     setBusinessId(undefined);
     setDescription('');
     setCompanyName('');
+    setIndustry('');
+    setCustomIndustry('');
     setSelectedDepts([]);
     setSelectedTools([]);
     setSelectedGoals([]);
@@ -168,6 +211,10 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
     setLeadError(null);
     setShowReportModal(false);
   };
+
+  const resolvedIndustry = industry === 'Other'
+    ? (customIndustry.trim() || 'Other')
+    : (industry.trim() || undefined);
 
   // Construct AuditResponse object for report modal display
   const currentAuditResponse: AuditResponse = {
@@ -181,6 +228,7 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
     business: {
       id: businessId,
       company_name: companyName || 'Your Business',
+      industry: resolvedIndustry,
       description: description,
     },
     opportunities: opportunities || [],
@@ -246,16 +294,78 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
                 </div>
 
                 <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-mono text-slate-500 mb-1.5 font-bold">Company Name (Optional)</label>
-                    <input
-                      type="text"
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
-                      placeholder="e.g. Apex Logistics or Nova Dental"
-                      className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-[#F05323] transition-colors"
-                    />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-mono text-slate-500 mb-1.5 font-bold">Company Name (Optional)</label>
+                      <input
+                        type="text"
+                        value={companyName}
+                        onChange={(e) => setCompanyName(e.target.value)}
+                        placeholder="e.g. Apex Logistics or Nova Dental"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-[#F05323] transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono text-slate-500 mb-1.5 font-bold">Industry Sector (Optional)</label>
+                      <select
+                        value={industry}
+                        onChange={(e) => setIndustry(e.target.value)}
+                        className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-[#F05323] transition-colors cursor-pointer"
+                      >
+                        <option value="">Select industry or pick below...</option>
+                        {industryOptions.map((opt) => (
+                          <option key={opt} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
+
+                  {/* Popular Industry Quick-Chips */}
+                  <div className="space-y-1.5">
+                    <span className="text-[11px] font-mono text-slate-400 font-semibold uppercase tracking-wider block">
+                      Common Sectors:
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {popularIndustries.map((ind) => {
+                        const isSelected = industry === ind;
+                        return (
+                          <button
+                            key={ind}
+                            type="button"
+                            onClick={() => setIndustry(isSelected ? '' : ind)}
+                            className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-all cursor-pointer ${
+                              isSelected
+                                ? 'bg-[#F05323] text-white border-[#F05323] shadow-xs'
+                                : 'bg-slate-50 hover:bg-slate-100 text-slate-600 border-slate-200'
+                            }`}
+                          >
+                            {ind}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Custom Industry Input if "Other" is selected */}
+                  {industry === 'Other' && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="p-3 bg-orange-50/60 rounded-xl border border-orange-200/80 space-y-1.5"
+                    >
+                      <label className="block text-xs font-mono text-slate-700 font-bold">Specify Your Industry / Niche</label>
+                      <input
+                        type="text"
+                        value={customIndustry}
+                        onChange={(e) => setCustomIndustry(e.target.value)}
+                        placeholder="e.g. Renewable Energy, Renewable Logistics, Event Management, Veterinary..."
+                        className="w-full px-3.5 py-2.5 rounded-lg bg-white border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-[#F05323] transition-colors"
+                      />
+                    </motion.div>
+                  )}
 
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
@@ -516,9 +626,16 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
                         <span className="text-[10px] font-mono uppercase font-bold text-teal-800 block">
                           Business Profile
                         </span>
-                        <span className="font-bold text-[#0A292C] block mt-0.5">
-                          {companyName || 'Unspecified Company'}
-                        </span>
+                        <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                          <span className="font-bold text-[#0A292C] block">
+                            {companyName || 'Unspecified Company'}
+                          </span>
+                          {resolvedIndustry && (
+                            <span className="px-2 py-0.5 bg-teal-100/80 text-teal-900 font-mono text-[10px] rounded-md font-semibold">
+                              {resolvedIndustry}
+                            </span>
+                          )}
+                        </div>
                         <p className="text-slate-600 text-[11px] line-clamp-2 mt-0.5">{description}</p>
                       </div>
 
