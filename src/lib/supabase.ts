@@ -302,25 +302,26 @@ export async function submitLead(payload: LeadSubmissionPayload): Promise<{
         name: payload.name.trim(),
         email: payload.email.trim(),
         phone: payload.phone?.trim() || null,
-        source: 'AI Opportunity Scanner',
-        status: 'new'
+        source: 'AI Opportunity Scanner'
       });
 
     logInsertDiagnostic('leads', error);
 
-    if (error && isJwtError(error)) {
-      console.warn('[Supabase] JWT timing issue in submitLead, retrying...');
-      await new Promise((r) => setTimeout(r, 600));
+    if (error && (error.code === 'PGRST204' || isJwtError(error))) {
+      if (isJwtError(error)) {
+        console.warn('[Supabase] JWT timing issue in submitLead, retrying...');
+        await new Promise((r) => setTimeout(r, 600));
+      } else {
+        console.warn('[Supabase] Column schema mismatch in leads, retrying minimal fields...');
+      }
+
       const retry = await supabase
         .from('leads')
         .insert({
-          id: generateUUID(),
           business_id: payload.business_id || null,
           name: payload.name.trim(),
           email: payload.email.trim(),
-          phone: payload.phone?.trim() || null,
-          source: 'AI Opportunity Scanner',
-          status: 'new'
+          phone: payload.phone?.trim() || null
         });
 
       error = retry.error;
@@ -371,25 +372,26 @@ export async function submitContactRequest(payload: ContactRequestPayload): Prom
         email: payload.email.trim(),
         company: payload.company?.trim() || null,
         phone: payload.phone?.trim() || null,
-        message: payload.message?.trim() || null,
-        status: 'new'
+        message: payload.message?.trim() || null
       });
 
     logInsertDiagnostic('contact_requests', error);
 
-    if (error && isJwtError(error)) {
-      console.warn('[Supabase] JWT timing issue in submitContactRequest, retrying...');
-      await new Promise((r) => setTimeout(r, 600));
+    if (error && (error.code === 'PGRST204' || isJwtError(error))) {
+      if (isJwtError(error)) {
+        console.warn('[Supabase] JWT timing issue in submitContactRequest, retrying...');
+        await new Promise((r) => setTimeout(r, 600));
+      } else {
+        console.warn('[Supabase] Column schema mismatch in contact_requests, retrying minimal fields...');
+      }
+
       const retry = await supabase
         .from('contact_requests')
         .insert({
-          id: generateUUID(),
           name: payload.name.trim(),
           email: payload.email.trim(),
-          company: payload.company?.trim() || null,
           phone: payload.phone?.trim() || null,
-          message: payload.message?.trim() || null,
-          status: 'new'
+          message: payload.message?.trim() || null
         });
 
       error = retry.error;
