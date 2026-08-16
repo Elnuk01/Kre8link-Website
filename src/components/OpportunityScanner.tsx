@@ -106,11 +106,11 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
         if (companyName) setLeadCompany(companyName);
       } else {
         console.error('[Scanner] Audit save failed:', res.error);
-        setErrorMessage('Something went wrong while generating your report. Please try again.');
+        setErrorMessage(res.error || 'Your AI opportunity scan could not be completed. Please try again.');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('[Scanner] Audit submit exception:', err);
-      setErrorMessage('Something went wrong while generating your report. Please try again.');
+      setErrorMessage(err?.message || 'Your AI opportunity scan could not be completed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -139,11 +139,11 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
       if (res.success) {
         setLeadSubmitted(true);
       } else {
-        setLeadError(res.error || 'Failed to submit contact details. Please try again.');
+        setLeadError(res.error || 'Unable to save your contact details. Please try again.');
       }
     } catch (err: any) {
       console.error('[Lead] Error:', err);
-      setLeadError('Something went wrong while saving your details. Please try again.');
+      setLeadError(err?.message || 'Unable to save your contact details. Please try again.');
     } finally {
       setLeadSubmitting(false);
     }

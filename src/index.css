@@ -78,6 +78,7 @@
   html, body {
     width: 100% !important;
     height: auto !important;
+    min-height: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
     background: #ffffff !important;
@@ -85,27 +86,70 @@
     overflow: visible !important;
   }
 
-  /* Hide all top-level body children by default so they don't take up layout space */
-  body > * {
+  /* Explicitly hide non-report components and layout wrappers during print */
+  nav,
+  header,
+  footer,
+  aside,
+  #hero,
+  #problems,
+  #architecture,
+  #solutions,
+  #improvements,
+  #case-studies,
+  #process,
+  #technology,
+  #about,
+  #cta,
+  .print\:hidden {
     display: none !important;
   }
 
-  /* Only display the active modal wrapper containing the printable report */
-  body > div:has(.print-container),
-  .print-modal-overlay {
-    display: block !important;
-    position: static !important;
-    inset: auto !important;
+  /* In Public Website: hide all main sections other than the scanner report */
+  #root > div > *:not(main),
+  #root > div > main > *:not(#scanner),
+  #scanner > div > div:not(:has(.print-container)) {
+    display: none !important;
+  }
+
+  #scanner {
     padding: 0 !important;
     margin: 0 !important;
     background: transparent !important;
+    border: none !important;
+  }
+
+  #scanner > div {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* In Admin Layout: reset wrapper heights and hide admin navigation */
+  .min-h-screen {
+    min-height: 0 !important;
+    height: auto !important;
+    background: #ffffff !important;
+  }
+
+  /* Reset modal overlay to standard in-flow block element */
+  .print-modal-overlay {
+    position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #ffffff !important;
     backdrop-filter: none !important;
     box-shadow: none !important;
     overflow: visible !important;
-    width: 100% !important;
-    height: auto !important;
+    display: block !important;
+    z-index: auto !important;
   }
 
+  /* Reset print container to full-width natural pagination */
   .print-container {
     display: block !important;
     position: static !important;
@@ -119,25 +163,27 @@
     background: #ffffff !important;
     color: #000000 !important;
     overflow: visible !important;
+    page-break-after: auto !important;
   }
 
-  /* Force elements with print:hidden to disappear */
-  .print\:hidden {
-    display: none !important;
-  }
-
-  /* Ensure cards stay intact across page breaks */
+  /* Keep individual opportunity cards unified across page breaks */
   .page-break-inside-avoid,
   .print-card {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
+    margin-bottom: 1.5rem !important;
   }
 
-  /* Optimize padding and typography for PDF */
+  /* Optimize typography and contrast for PDF generation */
   .print-container h1,
   .print-container h2,
   .print-container h3,
   .print-container h4 {
     color: #0A292C !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 }

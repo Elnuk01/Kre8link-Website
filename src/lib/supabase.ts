@@ -85,16 +85,14 @@ function generateUUID(): string {
 }
 
 // Safe diagnostic logging helper (never logs tokens, passwords or secrets)
-function logInsertDiagnostic(tableName: string, data: any, error: any) {
-  const hasReturnedData = Boolean(
-    data && (Array.isArray(data) ? data.length > 0 : Object.keys(data).length > 0)
-  );
+function logInsertDiagnostic(tableName: string, error: any) {
+  const isSuccess = !error;
   const errorCode = error?.code || 'NONE';
   const errorMessage = error?.message || 'NONE';
   const errorDetails = error?.details || 'NONE';
 
   console.log(
-    `[Supabase INSERT Diagnostic] Table: "${tableName}" | Has Data: ${hasReturnedData} | Error Code: "${errorCode}" | Message: "${errorMessage}" | Details: "${errorDetails}"`
+    `[Supabase INSERT] Table: "${tableName}" | Success: ${isSuccess} | Code: "${errorCode}" | Message: "${errorMessage}" | Details: "${errorDetails}"`
   );
 }
 
@@ -131,7 +129,7 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
     const auditResponseId = generateUUID();
 
     // 1. Create row in `businesses`
-    let { data: busData, error: busErr } = await supabase
+    let { error: busErr } = await supabase
       .from('businesses')
       .insert({
         id: businessId,
@@ -139,10 +137,9 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
         description: payload.business_description.trim(),
         industry: payload.industry || null,
         company_size: payload.company_size || null
-      })
-      .select();
+      });
 
-    logInsertDiagnostic('businesses', busData, busErr);
+    logInsertDiagnostic('businesses', busErr);
 
     if (busErr) {
       console.warn('[Supabase] Detailed businesses insert failed, retrying minimal fields:', busErr.message);
@@ -152,10 +149,9 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
           id: businessId,
           company_name: payload.company_name?.trim() || 'Anonymous Business',
           description: payload.business_description.trim()
-        })
-        .select();
+        });
 
-      logInsertDiagnostic('businesses (retry)', retryBus.data, retryBus.error);
+      logInsertDiagnostic('businesses (retry)', retryBus.error);
 
       if (retryBus.error) {
         console.error('[Supabase] Error inserting into businesses:', retryBus.error);
@@ -167,7 +163,7 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
     }
 
     // 2. Create row in `audit_responses`
-    let { data: auditData, error: auditErr } = await supabase
+    let { error: auditErr } = await supabase
       .from('audit_responses')
       .insert({
         id: auditResponseId,
@@ -175,10 +171,9 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
         pain_points: payload.pain_points,
         current_tools: payload.current_tools,
         primary_goal: payload.primary_goal
-      })
-      .select();
+      });
 
-    logInsertDiagnostic('audit_responses', auditData, auditErr);
+    logInsertDiagnostic('audit_responses', auditErr);
 
     if (auditErr) {
       console.warn('[Supabase] Standard audit_responses insert warning:', auditErr.message);
@@ -193,10 +188,9 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
           pain_points: payload.pain_points,
           current_tools: payload.current_tools,
           primary_goal: payload.primary_goal
-        })
-        .select();
+        });
 
-      logInsertDiagnostic('audit_responses (retry with desc)', retryWithDesc.data, retryWithDesc.error);
+      logInsertDiagnostic('audit_responses (retry with desc)', retryWithDesc.error);
 
       if (!retryWithDesc.error) {
         auditErr = null;
@@ -207,10 +201,9 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
           .insert({
             id: auditResponseId,
             business_id: businessId
-          })
-          .select();
+          });
 
-        logInsertDiagnostic('audit_responses (minimal retry)', retryMinimal.data, retryMinimal.error);
+        logInsertDiagnostic('audit_responses (minimal retry)', retryMinimal.error);
 
         if (!retryMinimal.error) {
           auditErr = null;
@@ -235,12 +228,11 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
         priority: typeof o.priority === 'number' ? o.priority : (o.priority === 'HIGH' ? 1 : idx + 1)
       }));
 
-      const { data: oppData, error: oppsErr } = await supabase
+      const { error: oppsErr } = await supabase
         .from('ai_opportunities')
-        .insert(oppRows)
-        .select();
+        .insert(oppRows);
 
-      logInsertDiagnostic('ai_opportunities', oppData, oppsErr);
+      logInsertDiagnostic('ai_opportunities', oppsErr);
 
       if (oppsErr) {
         console.warn('[Supabase] Priority int insert failed, trying string format:', oppsErr.message);
@@ -252,12 +244,11 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
           impact: o.impact,
           priority: String(o.priority || 'HIGH')
         }));
-        const { data: retryOppData, error: retryErr } = await supabase
+        const { error: retryErr } = await supabase
           .from('ai_opportunities')
-          .insert(stringOppRows)
-          .select();
+          .insert(stringOppRows);
 
-        logInsertDiagnostic('ai_opportunities (string priority retry)', retryOppData, retryErr);
+        logInsertDiagnostic('ai_opportunities (string priority retry)', retryErr);
 
         if (retryErr) {
           console.error('[Supabase] Error saving opportunities:', retryErr);
@@ -276,7 +267,7 @@ export async function submitOpportunityAudit(payload: AuditSubmissionPayload): P
     };
   } catch (err: any) {
     console.error('[Supabase] Unexpected audit error:', err);
-    return { success: false, error: err.message || 'Something went wrong while generating your report.' };
+    return { success: false, error: err.message || 'AI opportunity scan could not be completed.' };
   }
 }
 
@@ -303,7 +294,7 @@ export async function submitLead(payload: LeadSubmissionPayload): Promise<{
   }
 
   try {
-    let { data: leadData, error } = await supabase
+    let { error } = await supabase
       .from('leads')
       .insert({
         id: generateUUID(),
@@ -311,11 +302,11 @@ export async function submitLead(payload: LeadSubmissionPayload): Promise<{
         name: payload.name.trim(),
         email: payload.email.trim(),
         phone: payload.phone?.trim() || null,
-        source: 'AI Opportunity Scanner'
-      })
-      .select();
+        source: 'AI Opportunity Scanner',
+        status: 'new'
+      });
 
-    logInsertDiagnostic('leads', leadData, error);
+    logInsertDiagnostic('leads', error);
 
     if (error && isJwtError(error)) {
       console.warn('[Supabase] JWT timing issue in submitLead, retrying...');
@@ -328,24 +319,23 @@ export async function submitLead(payload: LeadSubmissionPayload): Promise<{
           name: payload.name.trim(),
           email: payload.email.trim(),
           phone: payload.phone?.trim() || null,
-          source: 'AI Opportunity Scanner'
-        })
-        .select();
+          source: 'AI Opportunity Scanner',
+          status: 'new'
+        });
 
-      leadData = retry.data;
       error = retry.error;
-      logInsertDiagnostic('leads (retry)', leadData, error);
+      logInsertDiagnostic('leads (retry)', error);
     }
 
     if (error) {
       console.error('[Supabase] Error inserting lead:', error);
-      return { success: false, error: error.message || error.code || 'Failed to save lead' };
+      return { success: false, error: error.message || error.code || 'Unable to save lead contact details' };
     }
 
     return { success: true };
   } catch (err: any) {
     console.error('[Supabase] Unexpected lead error:', err);
-    return { success: false, error: err.message };
+    return { success: false, error: err.message || 'Unable to save lead contact details' };
   }
 }
 
@@ -373,7 +363,7 @@ export async function submitContactRequest(payload: ContactRequestPayload): Prom
   }
 
   try {
-    let { data: contactData, error } = await supabase
+    let { error } = await supabase
       .from('contact_requests')
       .insert({
         id: generateUUID(),
@@ -381,11 +371,11 @@ export async function submitContactRequest(payload: ContactRequestPayload): Prom
         email: payload.email.trim(),
         company: payload.company?.trim() || null,
         phone: payload.phone?.trim() || null,
-        message: payload.message?.trim() || null
-      })
-      .select();
+        message: payload.message?.trim() || null,
+        status: 'new'
+      });
 
-    logInsertDiagnostic('contact_requests', contactData, error);
+    logInsertDiagnostic('contact_requests', error);
 
     if (error && isJwtError(error)) {
       console.warn('[Supabase] JWT timing issue in submitContactRequest, retrying...');
@@ -398,24 +388,23 @@ export async function submitContactRequest(payload: ContactRequestPayload): Prom
           email: payload.email.trim(),
           company: payload.company?.trim() || null,
           phone: payload.phone?.trim() || null,
-          message: payload.message?.trim() || null
-        })
-        .select();
+          message: payload.message?.trim() || null,
+          status: 'new'
+        });
 
-      contactData = retry.data;
       error = retry.error;
-      logInsertDiagnostic('contact_requests (retry)', contactData, error);
+      logInsertDiagnostic('contact_requests (retry)', error);
     }
 
     if (error) {
       console.error('[Supabase] Error inserting contact request:', error);
-      return { success: false, error: error.message || error.code || 'Failed to save contact request' };
+      return { success: false, error: error.message || error.code || 'Unable to save contact request' };
     }
 
     return { success: true };
   } catch (err: any) {
     console.error('[Supabase] Unexpected contact error:', err);
-    return { success: false, error: err.message };
+    return { success: false, error: err.message || 'Unable to save contact request' };
   }
 }
 
