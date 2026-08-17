@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Send, CheckCircle2, Sparkles, AlertCircle } from 'lucide-react';
 import { submitContactRequest } from '../lib/supabase';
+import { sendContactEmailNotification } from '../lib/email';
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -51,6 +52,17 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, pre
 
       if (res.success) {
         setSubmitted(true);
+
+        // Send internal notification and user confirmation email via Supabase Edge Function `send-email`
+        sendContactEmailNotification({
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim() || undefined,
+          company: company.trim() || undefined,
+          message: message.trim() || undefined
+        }).catch((emailErr) => {
+          console.warn('[ContactModal] Non-blocking email dispatch warning:', emailErr);
+        });
       } else {
         setErrorMsg(res.error || 'Failed to submit contact request. Please try again.');
       }

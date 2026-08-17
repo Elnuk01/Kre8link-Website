@@ -141,6 +141,60 @@ Respond ONLY with valid JSON in this exact structure:
     }
   });
 
+  // Outbound transactional email endpoint via Resend
+  app.post("/api/send-email", async (req, res) => {
+    try {
+      const { to, subject, html, reply_to } = req.body;
+      if (!to || !subject || !html) {
+        return res.status(400).json({ error: "Missing required fields (to, subject, html)" });
+      }
+
+      const resendApiKey = process.env.RESEND_API_KEY;
+      if (!resendApiKey) {
+        console.warn("[server.ts /api/send-email] RESEND_API_KEY environment variable is not configured on the server.");
+        return res.status(500).json({ error: "Email service not configured (missing RESEND_API_KEY)" });
+      }
+
+      const recipientList = Array.isArray(to) ? to : [to];
+
+      const resendRes = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${resendApiKey.trim()}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          from: "Kre8Link <admin@kre8link.com>",
+          to: recipientList,
+          subject,
+          html,
+          reply_to: reply_to || "admin@kre8link.com"
+        })
+      });
+
+      const resendData = await resendRes.json();
+
+      if (!resendRes.ok) {
+        console.error("[server.ts /api/send-email] Resend API error:", resendData);
+        return res.status(resendRes.status).json({
+          error: resendData.message || "Failed to deliver email through Resend",
+          details: resendData
+        });
+      }
+
+      console.log("[server.ts /api/send-email] Email delivered successfully:", {
+        to: recipientList,
+        subject,
+        id: resendData.id
+      });
+
+      return res.json({ success: true, id: resendData.id });
+    } catch (err: any) {
+      console.error("[server.ts /api/send-email] Exception:", err);
+      return res.status(500).json({ error: err.message || "Internal server error" });
+    }
+  });
+
   // Vite development middleware vs Static Production
   if (process.env.NODE_ENV !== "production") {
     const { createServer: createViteServer } = await import("vite");

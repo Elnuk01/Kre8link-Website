@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, ArrowRight, ArrowLeft, CheckCircle2, Check, RefreshCw, Send, ShieldCheck, AlertCircle, FileText, Printer, Building2, Calendar } from 'lucide-react';
 import { calculateOpportunities } from '../lib/opportunities';
 import { submitOpportunityAudit, submitLead } from '../lib/supabase';
+import { sendOpportunityEmailNotification, sendLeadEmailNotification } from '../lib/email';
 import { AIOpportunity, AuditResponse } from '../types';
 import { AIOpportunityReportModal } from './admin/AIOpportunityReportModal';
 
@@ -173,6 +174,29 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
 
       if (res.success) {
         setLeadSubmitted(true);
+
+        const businessNameResolved = companyName.trim() || leadCompany.trim() || 'Business Lead';
+
+        // 1. Send opportunity email notification via Supabase Edge Function `send-email`
+        sendOpportunityEmailNotification({
+          name: leadName.trim(),
+          email: leadEmail.trim(),
+          phone: leadPhone.trim() || null,
+          businessName: businessNameResolved,
+          opportunities: opportunities || [],
+        }).catch((emailErr) => {
+          console.warn('[Scanner] Non-blocking opportunity email dispatch warning:', emailErr);
+        });
+
+        // 2. Send lead email notification via Supabase Edge Function `send-email`
+        sendLeadEmailNotification({
+          name: leadName.trim(),
+          email: leadEmail.trim(),
+          phone: leadPhone.trim() || null,
+          company: businessNameResolved,
+        }).catch((emailErr) => {
+          console.warn('[Scanner] Non-blocking lead email dispatch warning:', emailErr);
+        });
       } else {
         const detailMsg = res.error
           ? `Your AI opportunity report was generated, but we couldn't save your contact details (${res.error}). Please try again.`
