@@ -128,7 +128,7 @@ export default function App() {
           <div className="text-center space-y-3">
             <div className="w-10 h-10 border-3 border-[#F05323] border-t-transparent rounded-full animate-spin mx-auto" />
             <p className="text-xs font-mono text-teal-300 font-semibold uppercase tracking-wider">
-              Verifying Kre8link Admin Credentials...
+              Verifying Kre8Link Admin Credentials...
             </p>
           </div>
         </div>

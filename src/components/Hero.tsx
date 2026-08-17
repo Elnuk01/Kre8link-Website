@@ -174,7 +174,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenScanner, onOpenContact }) => {
               <CheckCircle2 className="w-4 h-4 text-teal-600" />
               <span>Automated end-to-end data flow with zero manual intervention required.</span>
             </div>
-            <span className="font-mono text-slate-400 text-[11px]">Kre8link Architecture v3.4</span>
+            <span className="font-mono text-slate-400 text-[11px]">Kre8Link Architecture v3.4</span>
           </div>
         </motion.div>
       </div>

@@ -876,7 +876,7 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
                     <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-100">
                       <div className="flex items-center gap-2 text-xs text-slate-500">
                         <ShieldCheck className="w-4 h-4 text-teal-600 shrink-0" />
-                        <span>All data securely stored in Kre8link Supabase database.</span>
+                        <span>All data securely stored in Kre8Link Supabase database.</span>
                       </div>
 
                       <div className="flex items-center gap-3 w-full sm:w-auto">

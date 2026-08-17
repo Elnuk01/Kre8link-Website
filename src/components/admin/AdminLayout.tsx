@@ -88,7 +88,7 @@ export function AdminLayout({
         <div className="flex items-center gap-2">
           <img
             src="/Kre8Link-06.svg"
-            alt="Kre8link Logo"
+            alt="Kre8Link Logo"
             className="h-7 sm:h-8 w-auto object-contain brightness-0 invert"
           />
           <span className="text-[10px] text-teal-300 font-mono tracking-wide uppercase font-semibold border-l border-teal-800/80 pl-2">
@@ -110,7 +110,7 @@ export function AdminLayout({
         <div className="p-6 border-b border-teal-900/50 flex flex-col items-start gap-2">
           <img
             src="/Kre8Link-06.svg"
-            alt="Kre8link Logo"
+            alt="Kre8Link Logo"
             className="h-8 sm:h-9 w-auto object-contain max-w-[180px] brightness-0 invert"
           />
           <span className="text-[10px] font-mono text-teal-400 font-medium tracking-wider uppercase">
@@ -184,7 +184,7 @@ export function AdminLayout({
               <div className="flex flex-col items-start gap-1">
                 <img
                   src="/Kre8Link-06.svg"
-                  alt="Kre8link Logo"
+                  alt="Kre8Link Logo"
                   className="h-8 sm:h-9 w-auto object-contain max-w-[180px] brightness-0 invert"
                 />
                 <span className="text-[10px] font-mono text-teal-300 uppercase tracking-wider font-semibold">

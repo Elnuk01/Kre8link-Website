@@ -12,7 +12,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact, onOpenScanner }) 
   const [showSqlModal, setShowSqlModal] = useState(false);
   const [copiedSql, setCopiedSql] = useState(false);
 
-  const sqlSchema = `-- Kre8link Supabase Database Schema
+  const sqlSchema = `-- Kre8Link Supabase Database Schema
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS contact_requests (
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 font-mono">
           <div>
-            © 2026 Kre8link. All rights reserved.
+            © 2026 Kre8Link. All rights reserved.
           </div>
         </div>
       </div>

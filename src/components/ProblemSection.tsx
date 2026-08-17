@@ -101,7 +101,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({ onOpenScanner })
 
                 <div className="pt-4 border-t border-slate-100">
                   <div className="text-xs font-mono text-[#F05323] font-bold mb-1 uppercase tracking-wider">
-                    Kre8link Solution
+                    Kre8Link Solution
                   </div>
                   <p className="text-sm text-slate-800 font-semibold leading-snug">
                     {item.solutionText}

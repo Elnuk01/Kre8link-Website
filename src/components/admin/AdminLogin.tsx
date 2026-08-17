@@ -57,7 +57,7 @@ export function AdminLogin({ onSuccess, onNavigateHome }: AdminLoginProps) {
       if (!isAllowedAdminEmail(loggedInEmail)) {
         // Sign out unauthorized user immediately
         await supabase.auth.signOut();
-        setErrorMessage('You are not authorized to access the Kre8link Admin Portal.');
+        setErrorMessage('You are not authorized to access the Kre8Link Admin Portal.');
         setIsLoading(false);
         return;
       }
@@ -118,7 +118,7 @@ export function AdminLogin({ onSuccess, onNavigateHome }: AdminLoginProps) {
         className="absolute top-6 left-6 inline-flex items-center gap-2 text-xs font-semibold text-slate-300 hover:text-white transition-colors cursor-pointer"
       >
         <ArrowLeft className="w-4 h-4 text-[#F05323]" />
-        <span>Back to Kre8link</span>
+        <span>Back to Kre8Link</span>
       </button>
 
       {/* Login Card */}
@@ -127,7 +127,7 @@ export function AdminLogin({ onSuccess, onNavigateHome }: AdminLoginProps) {
         <div className="bg-[#0A292C] -mx-8 -mt-8 p-8 text-center border-b border-teal-900/40 mb-6 flex flex-col items-center justify-center">
           <img
             src="/Kre8Link-06.svg"
-            alt="Kre8link Logo"
+            alt="Kre8Link Logo"
             className="h-10 sm:h-12 w-auto object-contain mb-3 max-w-[240px] brightness-0 invert"
           />
           <p className="text-[11px] font-mono text-teal-300 uppercase tracking-widest font-semibold">

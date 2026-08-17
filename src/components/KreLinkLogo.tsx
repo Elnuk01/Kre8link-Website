@@ -11,7 +11,7 @@ export const KreLinkIcon: React.FC<{ className?: string }> = ({ className = "w-8
   return (
     <img
       src="/Kre8Link-06.svg"
-      alt="Kre8link Icon"
+      alt="Kre8Link Icon"
       className={`${className} object-contain inline-block`}
     />
   );
@@ -37,7 +37,7 @@ export const KreLinkLogo: React.FC<LogoProps> = ({
       <div className={`inline-flex items-center font-bold tracking-tight select-none ${className}`}>
         <img
           src="/Kre8Link-06.svg"
-          alt="Kre8link Logo"
+          alt="Kre8Link Logo"
           className={`${heightClasses[size]} w-auto object-contain ${filterClass}`}
         />
       </div>

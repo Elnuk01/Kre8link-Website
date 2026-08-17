@@ -1,4 +1,4 @@
--- Kre8link Supabase Database Schema
+-- Kre8Link Supabase Database Schema
 -- Run this in your Supabase SQL Editor to set up all required tables.
 
 -- Enable UUID extension

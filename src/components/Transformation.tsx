@@ -13,13 +13,13 @@ export const Transformation: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
           <p className="text-xs font-mono uppercase tracking-widest text-[#F05323] font-bold">
-            Kre8link Architecture Transformation
+            Kre8Link Architecture Transformation
           </p>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-[#0A292C] tracking-tight leading-tight">
             From disconnected work to intelligent systems.
           </h2>
           <p className="text-base sm:text-lg text-slate-600 font-normal">
-            Toggle between traditional disconnected business chaos and a unified Kre8link automated ecosystem.
+            Toggle between traditional disconnected business chaos and a unified Kre8Link automated ecosystem.
           </p>
 
           {/* Before / After Toggle Buttons */}
@@ -42,7 +42,7 @@ export const Transformation: React.FC = () => {
                   : 'text-slate-600 hover:text-[#0A292C]'
               }`}
             >
-              AFTER — Kre8link System
+              AFTER — Kre8Link System
             </button>
           </div>
         </div>
@@ -99,7 +99,7 @@ export const Transformation: React.FC = () => {
                     onClick={() => setViewState('after')}
                     className="underline hover:text-amber-950 font-bold cursor-pointer"
                   >
-                    See how Kre8link fixes this →
+                    See how Kre8Link fixes this →
                   </button>
                 </div>
               </motion.div>
@@ -143,7 +143,7 @@ export const Transformation: React.FC = () => {
                     {/* Central Core System */}
                     <div className="p-6 rounded-2xl bg-orange-50/80 border-2 border-[#F05323] text-center w-full md:w-64 shadow-lg shadow-[#F05323]/10">
                       <Network className="w-8 h-8 mx-auto mb-2 text-[#F05323] animate-pulse" />
-                      <div className="text-base font-extrabold text-[#0A292C]">Kre8link System</div>
+                      <div className="text-base font-extrabold text-[#0A292C]">Kre8Link System</div>
                       <div className="text-xs text-[#F05323] font-bold mt-1">AI Agent & Workflows</div>
                     </div>
 

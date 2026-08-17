@@ -75,35 +75,7 @@
 }
 
 @media print {
-  /* Hide all root layout and background elements */
-  nav,
-  header,
-  footer,
-  aside,
-  #hero,
-  #problems,
-  #architecture,
-  #solutions,
-  #improvements,
-  #case-studies,
-  #process,
-  #technology,
-  #about,
-  #cta,
-  .print\:hidden,
-  button,
-  .fixed:not(.print-modal-overlay) {
-    display: none !important;
-  }
-
-  /* Public Website: hide all main landing page siblings of the modal */
-  #root > div > *:not(main),
-  #root > div > main > *:not(#scanner),
-  #scanner > div:not(.print-modal-overlay):not(:has(.print-modal-overlay)),
-  #scanner > div > div:not(:has(.print-container)) {
-    display: none !important;
-  }
-
+  /* 1. Reset root, html, and body layout for clean multi-page document flow */
   html, body {
     width: 100% !important;
     height: auto !important;
@@ -111,33 +83,48 @@
     margin: 0 !important;
     padding: 0 !important;
     background: #ffffff !important;
-    color: #000000 !important;
+    color: #0f172a !important;
     overflow: visible !important;
     font-size: 11pt !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
-  /* Reset modal overlay to standard top-aligned full document container */
+  /* 2. Hide everything on the page by default */
+  body * {
+    visibility: hidden;
+  }
+
+  /* 3. Make ONLY the modal overlay, print container, and their contents visible */
+  .print-modal-overlay,
+  .print-modal-overlay *,
+  .print-container,
+  .print-container * {
+    visibility: visible !important;
+  }
+
+  /* 4. Position the modal overlay cleanly at the top of the print canvas */
   .print-modal-overlay {
-    position: static !important;
-    inset: auto !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
     width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    padding: 0 !important;
+    min-height: 100% !important;
     margin: 0 !important;
+    padding: 0 !important;
     background: #ffffff !important;
     backdrop-filter: none !important;
     box-shadow: none !important;
     overflow: visible !important;
     display: block !important;
-    z-index: auto !important;
+    z-index: 9999 !important;
   }
 
-  /* Reset print container to clean printable document */
+  /* 5. Clean printable document container without card shadows/borders */
   .print-container {
-    display: block !important;
-    position: static !important;
+    position: relative !important;
+    left: 0 !important;
+    top: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 !important;
@@ -146,12 +133,23 @@
     box-shadow: none !important;
     border-radius: 0 !important;
     background: #ffffff !important;
-    color: #000000 !important;
+    color: #0f172a !important;
     overflow: visible !important;
-    page-break-after: auto !important;
   }
 
-  /* Prevent page-break cutting inside opportunity cards */
+  /* 6. Explicitly remove interactive buttons and controls from print flow */
+  .print\:hidden,
+  .print-container .print\:hidden,
+  button,
+  nav,
+  header,
+  footer,
+  aside {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* 7. Ensure page breaks behave naturally without breaking in the middle of opportunity cards */
   .page-break-inside-avoid,
   .print-card {
     break-inside: avoid !important;
@@ -159,7 +157,7 @@
     margin-bottom: 1.25rem !important;
   }
 
-  /* Crisp contrast for text */
+  /* 8. Text color clarity and contrast */
   .print-container h1,
   .print-container h2,
   .print-container h3,
@@ -167,8 +165,8 @@
     color: #0A292C !important;
   }
 
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+  .print-container p,
+  .print-container span {
+    color: #1e293b !important;
   }
 }

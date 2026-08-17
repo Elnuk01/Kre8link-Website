@@ -165,7 +165,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenScanner, onOpenContact }) 
                 }}
                 className="w-full py-2.5 rounded-xl border border-slate-300 text-slate-700 text-sm font-medium hover:bg-slate-100"
               >
-                Talk to Kre8link
+                Talk to Kre8Link
               </button>
             </div>
           </motion.div>

@@ -24,7 +24,7 @@ export const Solutions: React.FC<SolutionsProps> = ({ onOpenScanner, onOpenConta
         'Payment recovery & follow-up agents'
       ],
       ctaText: 'Explore AI Agents →',
-      details: 'Kre8link designs and deploys custom AI agents trained on your business data, operating guidelines, and brand voice. They interface directly with your WhatsApp, phone system, CRM, and databases to take real action rather than just giving generic replies.'
+      details: 'Kre8Link designs and deploys custom AI agents trained on your business data, operating guidelines, and brand voice. They interface directly with your WhatsApp, phone system, CRM, and databases to take real action rather than just giving generic replies.'
     },
     {
       id: 'business-automation',
@@ -54,7 +54,7 @@ export const Solutions: React.FC<SolutionsProps> = ({ onOpenScanner, onOpenConta
         'Real-time lead qualification'
       ],
       ctaText: 'Improve Customer Experience →',
-      details: 'Transform customer satisfaction by eliminating wait times. Kre8link AI Customer Experience systems answer enquiries instantly, collect key information, book meetings, and route complex cases to senior reps.'
+      details: 'Transform customer satisfaction by eliminating wait times. Kre8Link AI Customer Experience systems answer enquiries instantly, collect key information, book meetings, and route complex cases to senior reps.'
     },
     {
       id: 'business-intelligence',
@@ -69,7 +69,7 @@ export const Solutions: React.FC<SolutionsProps> = ({ onOpenScanner, onOpenConta
         'Predictive business analytics'
       ],
       ctaText: 'Unlock Your Data →',
-      details: 'Stop digging through static spreadsheets. Kre8link builds automated pipelines that analyze transactional data, customer behavior, and operational trends to deliver plain-English AI summaries directly to leadership.'
+      details: 'Stop digging through static spreadsheets. Kre8Link builds automated pipelines that analyze transactional data, customer behavior, and operational trends to deliver plain-English AI summaries directly to leadership.'
     },
     {
       id: 'ai-transformation',

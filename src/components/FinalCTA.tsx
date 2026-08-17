@@ -57,7 +57,7 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onOpenScanner, onOpenContact
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-sm font-semibold text-slate-700 hover:text-[#0A292C] bg-white hover:bg-slate-50 border border-slate-200 transition-all cursor-pointer shadow-sm"
           >
             <MessageSquare className="w-4 h-4 text-slate-500" />
-            <span>Talk to Kre8link</span>
+            <span>Talk to Kre8Link</span>
           </button>
         </motion.div>
 

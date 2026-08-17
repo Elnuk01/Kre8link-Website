@@ -24,7 +24,12 @@ export function AIOpportunityReportModal({ audit, onClose }: AIOpportunityReport
   }, [onClose]);
 
   const handlePrint = () => {
+    const originalTitle = document.title;
+    document.title = 'Kre8Link — AI Opportunity Report';
     window.print();
+    setTimeout(() => {
+      document.title = originalTitle || 'Kre8Link';
+    }, 1500);
   };
 
   return (
@@ -37,7 +42,7 @@ export function AIOpportunityReportModal({ audit, onClose }: AIOpportunityReport
       className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto print-modal-overlay"
     >
       <div className="print-container bg-white text-slate-900 w-full max-w-3xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden my-8 animate-scaleUp relative">
-        {/* Top Actions & Banner */}
+        {/* Top Actions & Banner (Screen Only) */}
         <div className="p-5 sm:p-6 bg-[#0A292C] text-white flex items-center justify-between border-b border-teal-900/50 print:hidden sticky top-0 z-20">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-[#F05323] text-white flex items-center justify-center font-black text-xl shrink-0">
@@ -45,7 +50,7 @@ export function AIOpportunityReportModal({ audit, onClose }: AIOpportunityReport
             </div>
             <div>
               <span className="text-[10px] font-mono text-teal-300 font-semibold uppercase tracking-wider block">
-                Kre8link Intelligence System
+                Kre8Link AI Transformation Systems
               </span>
               <h3 className="text-base sm:text-lg font-bold text-white">AI Opportunity Report</h3>
             </div>
@@ -69,6 +74,23 @@ export function AIOpportunityReportModal({ audit, onClose }: AIOpportunityReport
               <X className="w-4 h-4" />
               <span>Close</span>
             </button>
+          </div>
+        </div>
+
+        {/* Dedicated Print-Only Executive Header */}
+        <div className="hidden print:flex items-center justify-between pb-4 mb-4 border-b-2 border-[#0A292C]">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-[#F05323] text-white flex items-center justify-center font-black text-lg">
+              K
+            </div>
+            <div>
+              <div className="text-base font-black text-[#0A292C] tracking-tight">Kre8Link</div>
+              <div className="text-[10px] font-mono text-slate-500 font-semibold">AI Transformation Systems</div>
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-xs font-bold font-mono text-[#F05323]">https://kre8link.com</div>
+            <div className="text-[10px] font-mono text-slate-500">Confidential Executive Assessment</div>
           </div>
         </div>
 
@@ -234,10 +256,12 @@ export function AIOpportunityReportModal({ audit, onClose }: AIOpportunityReport
 
           {/* Footer Branding & Actions */}
           <div className="pt-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs print:pb-0">
-            <div className="text-slate-400 font-mono text-[11px] flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
-              <span>Kre8link AI Transformation Systems</span>
-              <span className="hidden sm:inline">•</span>
-              <span>Confidential Executive Audit</span>
+            <div className="text-slate-500 font-mono text-[11px] flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+              <span className="font-bold text-slate-700">Kre8Link AI Transformation Systems</span>
+              <span className="hidden sm:inline text-slate-300">•</span>
+              <span className="text-[#F05323] font-semibold">https://kre8link.com</span>
+              <span className="hidden sm:inline text-slate-300">•</span>
+              <span className="text-slate-400">Confidential Executive Assessment</span>
             </div>
 
             <div className="flex items-center gap-2 print:hidden w-full sm:w-auto justify-end">

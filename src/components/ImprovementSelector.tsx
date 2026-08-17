@@ -18,7 +18,7 @@ export const ImprovementSelector: React.FC<ImprovementSelectorProps> = ({ onOpen
       badge: 'Sales & Growth',
       headlineText: 'Turn more enquiries into paying customers.',
       diagramNodes: ['LEAD', 'AI QUALIFICATION', 'CRM', 'FOLLOW-UP', 'SALES TEAM', 'CUSTOMER'],
-      explanation: 'Kre8link automates lead capture across WhatsApp, web, and social channels. Our AI handles initial qualification, automated follow-up sequences, and routes high-intent buyers directly to your calendar so reps focus exclusively on closing.',
+      explanation: 'Kre8Link automates lead capture across WhatsApp, web, and social channels. Our AI handles initial qualification, automated follow-up sequences, and routes high-intent buyers directly to your calendar so reps focus exclusively on closing.',
       systemBenefit: '2.5x increase in sales conversion speed & 0% lead dropoff.'
     },
     {
@@ -28,7 +28,7 @@ export const ImprovementSelector: React.FC<ImprovementSelectorProps> = ({ onOpen
       badge: 'Operational Efficiency',
       headlineText: 'Cut manual data entry and administrative overhead by up to 70%.',
       diagramNodes: ['INCOMING DATA', 'AI EXTRACTOR', 'RULES ENGINE', 'DATABASE', 'NOTIFICATION'],
-      explanation: 'Stop paying team members to manually copy numbers between spreadsheets, invoices, and software. Kre8link builds autonomous document processing and workflow pipelines that execute background tasks flawlessly at near-zero incremental cost.',
+      explanation: 'Stop paying team members to manually copy numbers between spreadsheets, invoices, and software. Kre8Link builds autonomous document processing and workflow pipelines that execute background tasks flawlessly at near-zero incremental cost.',
       systemBenefit: 'Reduces operational execution cost by over 60% per workflow.'
     },
     {
@@ -48,7 +48,7 @@ export const ImprovementSelector: React.FC<ImprovementSelectorProps> = ({ onOpen
       badge: 'Data Intelligence',
       headlineText: 'Turn scattered records into daily actionable management insights.',
       diagramNodes: ['RAW DATA', 'SUPABASE / SQL', 'AI ANALYTICS ENGINE', 'EXECUTIVE DIGEST'],
-      explanation: 'Bring your operational data together. Kre8link aggregates records from your accounting software, CRM, and communication logs to deliver automated daily executive briefings directly to Slack, WhatsApp, or Email.',
+      explanation: 'Bring your operational data together. Kre8Link aggregates records from your accounting software, CRM, and communication logs to deliver automated daily executive briefings directly to Slack, WhatsApp, or Email.',
       systemBenefit: 'Eliminates 10+ hours per week spent compiling manual spreadsheets.'
     }
   ];

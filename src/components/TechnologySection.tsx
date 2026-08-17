@@ -59,7 +59,7 @@ export const TechnologySection: React.FC = () => {
             "The tools change. Your business system stays."
           </p>
           <p className="text-xs text-[#F05323] font-bold mt-1">
-            Kre8link builds vendor-agnostic architecture designed for long-term reliability.
+            Kre8Link builds vendor-agnostic architecture designed for long-term reliability.
           </p>
         </div>
       </div>
