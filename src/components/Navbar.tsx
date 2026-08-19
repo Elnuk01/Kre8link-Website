@@ -22,22 +22,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenScanner, onOpenContact }) 
 
   const scrollToSection = (id: string) => {
     setMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    // Slight timeout ensures mobile menu closure doesn't interrupt scroll calculation
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 50);
   };
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-[#F8FAF9]/90 backdrop-blur-md border-b border-slate-200/80 py-3 shadow-sm'
-          : 'bg-transparent py-5'
+          ? 'bg-[#F8FAF9]/95 backdrop-blur-md border-b border-slate-200/80 py-3 shadow-sm'
+          : 'bg-[#F8FAF9]/80 backdrop-blur-xs md:bg-transparent py-3 md:py-5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        {/* Brand Logo with exact uploaded logo design */}
+        {/* Brand Logo */}
         <a
           href="#"
           className="flex items-center gap-2 group transition-opacity pl-1 sm:pl-2"
@@ -48,24 +51,28 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenScanner, onOpenContact }) 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
           <button
+            type="button"
             onClick={() => scrollToSection('solutions')}
             className="hover:text-[#0A292C] transition-colors cursor-pointer"
           >
             Solutions
           </button>
           <button
+            type="button"
             onClick={() => scrollToSection('transformation')}
             className="hover:text-[#0A292C] transition-colors cursor-pointer"
           >
             How We Work
           </button>
           <button
+            type="button"
             onClick={() => scrollToSection('cases')}
             className="hover:text-[#0A292C] transition-colors cursor-pointer"
           >
             Case Studies
           </button>
           <button
+            type="button"
             onClick={() => scrollToSection('about')}
             className="hover:text-[#0A292C] transition-colors cursor-pointer"
           >
@@ -76,12 +83,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenScanner, onOpenContact }) 
         {/* Right Desktop CTA */}
         <div className="hidden md:flex items-center gap-3">
           <button
+            type="button"
             onClick={onOpenContact}
             className="text-xs font-semibold text-slate-700 hover:text-[#0A292C] px-3.5 py-2 transition-colors cursor-pointer"
           >
             Contact
           </button>
           <button
+            type="button"
             onClick={onOpenScanner}
             className="relative group inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold text-white bg-[#F05323] hover:bg-[#D94418] transition-all duration-200 shadow-md shadow-[#F05323]/20 cursor-pointer overflow-hidden"
           >
@@ -92,17 +101,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenScanner, onOpenContact }) 
           </button>
         </div>
 
-        {/* Mobile Hamburger Toggle */}
+        {/* Mobile Header Buttons (Consistent Find Your AI Opportunity) */}
         <div className="flex md:hidden items-center gap-2">
           <button
+            type="button"
             onClick={onOpenScanner}
-            className="px-3 py-1.5 rounded-full text-xs font-semibold text-white bg-[#F05323] hover:bg-[#D94418] transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold text-white bg-[#F05323] hover:bg-[#D94418] transition-all shadow-xs active:scale-95 cursor-pointer"
           >
-            Scanner
+            <Sparkles className="w-3 h-3" />
+            <span>Find Your AI Opportunity</span>
           </button>
           <button
+            type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-slate-600 hover:text-[#0A292C] rounded-lg focus:outline-none"
+            className="p-2 text-slate-700 hover:text-[#0A292C] hover:bg-slate-100/80 rounded-lg focus:outline-none cursor-pointer transition-colors active:scale-95"
             aria-label="Toggle Navigation Menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -118,52 +130,58 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenScanner, onOpenContact }) 
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden bg-[#F8FAF9]/95 border-b border-slate-200 backdrop-blur-xl px-4 pt-4 pb-6 space-y-4 shadow-lg"
+            className="md:hidden bg-[#F8FAF9] border-b border-slate-200/90 shadow-xl px-5 pt-3 pb-6 space-y-4 relative z-50"
           >
-            <div className="flex flex-col space-y-3 text-base font-medium text-slate-700">
+            <div className="flex flex-col space-y-1 text-base font-medium text-slate-700">
               <button
+                type="button"
                 onClick={() => scrollToSection('solutions')}
-                className="text-left py-2 hover:text-[#0A292C] border-b border-slate-200/60"
+                className="w-full text-left py-3 px-2 rounded-lg hover:bg-slate-100 hover:text-[#0A292C] transition-colors cursor-pointer border-b border-slate-100 font-semibold"
               >
                 Solutions
               </button>
               <button
+                type="button"
                 onClick={() => scrollToSection('transformation')}
-                className="text-left py-2 hover:text-[#0A292C] border-b border-slate-200/60"
+                className="w-full text-left py-3 px-2 rounded-lg hover:bg-slate-100 hover:text-[#0A292C] transition-colors cursor-pointer border-b border-slate-100 font-semibold"
               >
                 How We Work
               </button>
               <button
+                type="button"
                 onClick={() => scrollToSection('cases')}
-                className="text-left py-2 hover:text-[#0A292C] border-b border-slate-200/60"
+                className="w-full text-left py-3 px-2 rounded-lg hover:bg-slate-100 hover:text-[#0A292C] transition-colors cursor-pointer border-b border-slate-100 font-semibold"
               >
                 Case Studies
               </button>
               <button
+                type="button"
                 onClick={() => scrollToSection('about')}
-                className="text-left py-2 hover:text-[#0A292C] border-b border-slate-200/60"
+                className="w-full text-left py-3 px-2 rounded-lg hover:bg-slate-100 hover:text-[#0A292C] transition-colors cursor-pointer font-semibold"
               >
                 About
               </button>
             </div>
 
-            <div className="pt-2 flex flex-col gap-2">
+            <div className="pt-2 flex flex-col gap-2.5">
               <button
+                type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  onOpenScanner();
+                  setTimeout(onOpenScanner, 50);
                 }}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#F05323] hover:bg-[#D94418] text-white text-sm font-semibold shadow-md shadow-[#F05323]/20"
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#F05323] hover:bg-[#D94418] text-white text-sm font-semibold shadow-md shadow-[#F05323]/20 cursor-pointer active:scale-98 transition-all"
               >
                 <Sparkles className="w-4 h-4" />
-                Find Your AI Opportunity
+                <span>Find Your AI Opportunity</span>
               </button>
               <button
+                type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  onOpenContact();
+                  setTimeout(onOpenContact, 50);
                 }}
-                className="w-full py-2.5 rounded-xl border border-slate-300 text-slate-700 text-sm font-medium hover:bg-slate-100"
+                className="w-full py-2.5 rounded-xl border border-slate-300 text-slate-700 text-sm font-medium hover:bg-slate-100 hover:text-[#0A292C] transition-colors cursor-pointer active:scale-98"
               >
                 Talk to Kre8Link
               </button>

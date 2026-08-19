@@ -55,14 +55,24 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({ onOpenScanner })
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <p className="text-xs font-mono uppercase tracking-widest text-[#F05323] font-bold">
-            Common Bottlenecks
+            Start With The Problem
           </p>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-[#0A292C] tracking-tight leading-tight">
-            Your team shouldn't be doing work AI can handle.
+            Identify the bottleneck first. Then see where AI comes in.
           </h2>
           <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
-            Every business has repetitive work, disconnected systems, slow processes and information trapped inside spreadsheets, inboxes and conversations. We turn those bottlenecks into intelligent workflows.
+            Every business has repetitive tasks, slow handoffs, and trapped data. Start by pinpointing the operational challenge slowing your team down, then run our free <strong>Find Your AI Opportunity</strong> scan to see the exact intelligent workflows that solve it.
           </p>
+          <div className="pt-2">
+            <button
+              type="button"
+              onClick={onOpenScanner}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-semibold text-white bg-[#F05323] hover:bg-[#D94418] shadow-md shadow-[#F05323]/20 transition-all cursor-pointer"
+            >
+              <span>Find Your AI Opportunity Now</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* 5 Interactive Cards */}

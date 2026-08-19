@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
-import { Database, Copy, Check, Terminal, X } from 'lucide-react';
+import { Database, Copy, Check, Terminal, X, Mail, Instagram, Linkedin, ExternalLink, Headphones } from 'lucide-react';
 import { isSupabaseConfigured } from '../lib/supabase';
 import { KreLinkLogo } from './KreLinkLogo';
+
+// Official X brand icon
+const XIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+  <svg
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+    className={`fill-current ${className}`}
+  >
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
 
 interface FooterProps {
   onOpenContact: () => void;
@@ -76,18 +87,64 @@ CREATE TABLE IF NOT EXISTS contact_requests (
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const socialLinks = [
+    {
+      name: 'Instagram',
+      href: 'https://www.instagram.com/kre8link?igsh=MWdlb3owbXNhNG5kZg==',
+      icon: Instagram,
+      handle: '@kre8link',
+    },
+    {
+      name: 'X',
+      href: 'https://x.com/kre8link',
+      icon: XIcon,
+      handle: '@kre8link',
+    },
+    {
+      name: 'LinkedIn',
+      href: 'https://www.linkedin.com/company/kre8link-technologies/',
+      icon: Linkedin,
+      handle: 'Kre8Link Technologies',
+    },
+  ];
+
   return (
     <footer className="bg-[#F8FAF9] border-t border-slate-200/80 text-slate-600 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand Info */}
-          <div className="md:col-span-2 space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
+          {/* Brand Info & Socials */}
+          <div className="lg:col-span-2 space-y-5">
             <a href="#" className="flex items-center gap-2">
               <KreLinkLogo size="lg" variant="dark" />
             </a>
             <p className="text-xs text-slate-500 max-w-sm leading-relaxed">
               AI transformation for ambitious businesses. We find the processes slowing your business down and turn them into intelligent systems that work for you.
             </p>
+
+            {/* Social Media Links */}
+            <div className="pt-2 space-y-3">
+              <h5 className="text-[11px] font-mono uppercase tracking-wider text-[#0A292C] font-bold">
+                Connect With Us
+              </h5>
+              <div className="flex items-center gap-3">
+                {socialLinks.map((social) => {
+                  const Icon = social.icon;
+                  return (
+                    <a
+                      key={social.name}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 rounded-lg bg-white border border-slate-200/80 hover:border-[#F05323]/50 hover:bg-orange-50/40 text-slate-600 hover:text-[#F05323] transition-all flex items-center justify-center shadow-xs group"
+                      title={social.name}
+                      aria-label={social.name}
+                    >
+                      <Icon className="w-4 h-4 transition-transform group-hover:scale-110" />
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
           </div>
 
           {/* Navigation Links */}
@@ -116,21 +173,56 @@ CREATE TABLE IF NOT EXISTS contact_requests (
               </li>
               <li>
                 <button onClick={onOpenContact} className="hover:text-[#F05323] transition-colors cursor-pointer">
-                  Contact
+                  Contact Us
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Solutions Links */}
+          {/* Capabilities Links */}
           <div className="space-y-3">
             <h4 className="text-xs font-mono uppercase tracking-wider text-[#0A292C] font-bold">Capabilities</h4>
             <ul className="space-y-2 text-xs text-slate-500">
-              <li><button onClick={onOpenScanner} className="hover:text-[#F05323]">AI Agents</button></li>
-              <li><button onClick={onOpenScanner} className="hover:text-[#F05323]">Business Automation</button></li>
-              <li><button onClick={onOpenScanner} className="hover:text-[#F05323]">AI Customer Experience</button></li>
-              <li><button onClick={onOpenScanner} className="hover:text-[#F05323]">Business Intelligence</button></li>
-              <li><button onClick={onOpenScanner} className="hover:text-[#F05323]">AI Opportunity Scanner</button></li>
+              <li><button onClick={onOpenScanner} className="hover:text-[#F05323] cursor-pointer">AI Agents</button></li>
+              <li><button onClick={onOpenScanner} className="hover:text-[#F05323] cursor-pointer">Business Automation</button></li>
+              <li><button onClick={onOpenScanner} className="hover:text-[#F05323] cursor-pointer">AI Customer Experience</button></li>
+              <li><button onClick={onOpenScanner} className="hover:text-[#F05323] cursor-pointer">Business Intelligence</button></li>
+              <li><button onClick={onOpenScanner} className="hover:text-[#F05323] cursor-pointer">AI Opportunity Scanner</button></li>
+            </ul>
+          </div>
+
+          {/* Contact & Support Channels */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-mono uppercase tracking-wider text-[#0A292C] font-bold">Contact &amp; Support</h4>
+            <ul className="space-y-3 text-xs">
+              <li>
+                <div className="text-[11px] text-slate-400 font-mono uppercase">General Inquiries</div>
+                <a
+                  href="mailto:info@kre8link.com"
+                  className="flex items-center gap-1.5 text-slate-700 hover:text-[#F05323] font-medium transition-colors mt-0.5 group"
+                >
+                  <Mail className="w-3.5 h-3.5 text-[#0d9488] group-hover:text-[#F05323]" />
+                  <span>info@kre8link.com</span>
+                </a>
+              </li>
+              <li>
+                <div className="text-[11px] text-slate-400 font-mono uppercase">Support &amp; Assistance</div>
+                <a
+                  href="mailto:support@kre8link.com"
+                  className="flex items-center gap-1.5 text-slate-700 hover:text-[#F05323] font-medium transition-colors mt-0.5 group"
+                >
+                  <Headphones className="w-3.5 h-3.5 text-[#0d9488] group-hover:text-[#F05323]" />
+                  <span>support@kre8link.com</span>
+                </a>
+              </li>
+              <li className="pt-1">
+                <button
+                  onClick={onOpenContact}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#F05323] hover:text-[#D94418] transition-colors cursor-pointer"
+                >
+                  <span>Request a Consultation &rarr;</span>
+                </button>
+              </li>
             </ul>
           </div>
         </div>
@@ -138,7 +230,22 @@ CREATE TABLE IF NOT EXISTS contact_requests (
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 font-mono">
           <div>
-            © 2026 Kre8Link. All rights reserved.
+            &copy; 2026 Kre8Link. All rights reserved.
+          </div>
+          <div className="flex items-center gap-6">
+            <a
+              href="mailto:info@kre8link.com"
+              className="hover:text-[#F05323] transition-colors"
+            >
+              info@kre8link.com
+            </a>
+            <span>&bull;</span>
+            <a
+              href="mailto:support@kre8link.com"
+              className="hover:text-[#F05323] transition-colors"
+            >
+              support@kre8link.com
+            </a>
           </div>
         </div>
       </div>

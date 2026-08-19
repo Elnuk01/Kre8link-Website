@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { TrustStatement } from './components/TrustStatement';
 import { ProblemSection } from './components/ProblemSection';
 import { Transformation } from './components/Transformation';
 import { Solutions } from './components/Solutions';
-import { ImprovementSelector } from './components/ImprovementSelector';
 import { OpportunityScanner } from './components/OpportunityScanner';
 import { CaseStudies } from './components/CaseStudies';
 import { ProcessSection } from './components/ProcessSection';
@@ -14,6 +12,7 @@ import { AboutSection } from './components/AboutSection';
 import { FinalCTA } from './components/FinalCTA';
 import { Footer } from './components/Footer';
 import { ContactModal } from './components/ContactModal';
+import { ScrollToTopButton } from './components/ScrollToTopButton';
 
 // Admin Portal Imports
 import { AdminLayout } from './components/admin/AdminLayout';
@@ -204,10 +203,7 @@ export default function App() {
           onOpenContact={handleOpenContact}
         />
 
-        {/* Trust Statement */}
-        <TrustStatement />
-
-        {/* Bottleneck & Problem Cards */}
+        {/* Bottleneck & Problem Cards (Emphasizing Identifying The Problem & Finding AI Opportunity) */}
         <ProblemSection onOpenScanner={handleOpenScanner} />
 
         {/* Kre8link Transformation Architecture */}
@@ -219,13 +215,7 @@ export default function App() {
           onOpenContact={handleOpenContact}
         />
 
-        {/* Interactive "What do you want to improve?" */}
-        <ImprovementSelector
-          onOpenContact={handleOpenContact}
-          onOpenScanner={handleOpenScanner}
-        />
-
-        {/* Interactive AI Opportunity Scanner Tool */}
+        {/* Interactive AI Opportunity Scanner Tool (Primary Flagship Feature) */}
         <OpportunityScanner
           onOpenContactWithData={handleOpenContactWithData}
         />
@@ -254,6 +244,9 @@ export default function App() {
         onOpenContact={handleOpenContact}
         onOpenScanner={handleOpenScanner}
       />
+
+      {/* Floating Scroll To Top Button */}
+      <ScrollToTopButton />
 
       {/* Contact & Consultation Request Modal */}
       <ContactModal
