@@ -142,11 +142,11 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
         if (companyName) setLeadCompany(companyName);
       } else {
         console.error('[Scanner] Audit save failed:', res.error);
-        setErrorMessage(res.error || 'Your AI opportunity scan could not be completed. Please try again.');
+        setErrorMessage(res.error || 'Your business efficiency audit could not be completed. Please try again.');
       }
     } catch (err: any) {
       console.error('[Scanner] Audit submit exception:', err);
-      setErrorMessage(err?.message || 'Your AI opportunity scan could not be completed. Please try again.');
+      setErrorMessage(err?.message || 'Your business efficiency audit could not be completed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -199,15 +199,15 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
         });
       } else {
         const detailMsg = res.error
-          ? `Your AI opportunity report was generated, but we couldn't save your contact details (${res.error}). Please try again.`
-          : "Your AI opportunity report was generated, but we couldn't save your contact details. Please try again.";
+          ? `Your business efficiency report was generated, but we couldn't save your contact details (${res.error}). Please try again.`
+          : "Your business efficiency report was generated, but we couldn't save your contact details. Please try again.";
         setLeadError(detailMsg);
       }
     } catch (err: any) {
       console.error('[Lead] Error:', err);
       const detailMsg = err?.message
-        ? `Your AI opportunity report was generated, but we couldn't save your contact details (${err.message}). Please try again.`
-        : "Your AI opportunity report was generated, but we couldn't save your contact details. Please try again.";
+        ? `Your business efficiency report was generated, but we couldn't save your contact details (${err.message}). Please try again.`
+        : "Your business efficiency report was generated, but we couldn't save your contact details. Please try again.";
       setLeadError(detailMsg);
     } finally {
       setLeadSubmitting(false);
@@ -264,13 +264,13 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12 space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-orange-200 text-[#F05323] text-xs font-mono font-bold">
             <Sparkles className="w-3.5 h-3.5" />
-            Interactive AI Opportunity Scanner
+            Business Efficiency Audit
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-[#0A292C] tracking-tight">
-            Find your AI opportunities.
+            See what's slowing your business down.
           </h2>
           <p className="text-sm sm:text-base text-slate-600">
-            Tell us a little about your business. We'll identify processes that could potentially be improved with AI and automation.
+            See what's slowing your business down and where automation could help.
           </p>
         </div>
 
@@ -605,7 +605,7 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
                           {loadingMessages[loadingTextIndex]}
                         </h3>
                         <p className="text-xs text-slate-500 font-mono">
-                          Evaluating operational workflows & generating AI opportunity roadmap...
+                          Reviewing your business and generating your efficiency report...
                         </p>
                       </motion.div>
                     </AnimatePresence>
@@ -617,7 +617,7 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
                       <div>
                         <div className="text-xs font-mono text-teal-700 flex items-center gap-1.5 mb-1 font-bold">
                           <CheckCircle2 className="w-4 h-4 text-teal-600" />
-                          <span>AI OPPORTUNITY SCAN COMPLETE</span>
+                          <span>BUSINESS EFFICIENCY AUDIT COMPLETE</span>
                         </div>
                         <h3 className="text-2xl sm:text-3xl font-extrabold text-[#0A292C]">
                           AI Opportunities for {companyName || 'Your Business'}
@@ -754,13 +754,13 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
                         <div>
                           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/20 text-orange-300 border border-orange-500/30 text-xs font-mono font-bold mb-2">
                             <Sparkles className="w-3.5 h-3.5 text-[#F05323]" />
-                            Get Your AI Opportunity Report
+                            Get Your Business Efficiency Report
                           </div>
                           <h4 className="text-xl sm:text-2xl font-extrabold text-white">
-                            Get Your AI Opportunity Report & Consultation
+                            Get Your Business Efficiency Report & Consultation
                           </h4>
                           <p className="text-xs text-slate-300 mt-1 max-w-xl">
-                            Get your customized AI opportunity report and discuss how we can implement the highest-impact opportunities for your business.
+                            Get your personalised business efficiency report and discuss the improvements that could have the biggest impact.
                           </p>
                         </div>
 
@@ -777,7 +777,7 @@ export const OpportunityScanner: React.FC<OpportunityScannerProps> = ({ onOpenCo
                         <div className="p-6 rounded-2xl bg-teal-900/50 border border-teal-500/40 text-center space-y-4">
                           <CheckCircle2 className="w-10 h-10 text-teal-300 mx-auto" />
                           <div>
-                            <h5 className="text-lg font-bold text-white">Your AI Opportunity Report is Ready!</h5>
+                            <h5 className="text-lg font-bold text-white">Your Business Efficiency Report is Ready!</h5>
                             <p className="text-xs text-slate-300 max-w-md mx-auto mt-1">
                               Thank you, <strong className="text-white">{leadName}</strong>! Your information has been saved and connected to your audit profile. Our senior AI consultants will review your roadmap.
                             </p>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Bot, Zap, Sparkles, LineChart, Compass, ArrowRight, CheckCircle2, X } from 'lucide-react';
+import { Bot, Zap, Sparkles, LineChart, ArrowRight, CheckCircle2, X } from 'lucide-react';
+import { SolutionVisual } from './HomepageVisuals';
 
 interface SolutionsProps {
   onOpenScanner: () => void;
@@ -13,8 +14,9 @@ export const Solutions: React.FC<SolutionsProps> = ({ onOpenScanner, onOpenConta
   const solutions = [
     {
       id: 'ai-agents',
-      title: 'AI AGENTS',
-      tagline: 'Intelligent agents that communicate, reason and take action.',
+      title: 'Automate Repetitive Work',
+      visual: 'automation' as const,
+      tagline: 'Reduce routine tasks your team spends hours doing manually.',
       icon: Bot,
       examples: [
         'Customer service agents',
@@ -28,8 +30,9 @@ export const Solutions: React.FC<SolutionsProps> = ({ onOpenScanner, onOpenConta
     },
     {
       id: 'business-automation',
-      title: 'BUSINESS AUTOMATION',
-      tagline: 'Connect your tools and eliminate repetitive manual work.',
+      title: 'Connect Your Business Tools',
+      visual: 'tools' as const,
+      tagline: 'Make WhatsApp, email, spreadsheets, CRM and other tools work together.',
       icon: Zap,
       examples: [
         'Lead automation & CRM routing',
@@ -43,8 +46,9 @@ export const Solutions: React.FC<SolutionsProps> = ({ onOpenScanner, onOpenConta
     },
     {
       id: 'customer-experience',
-      title: 'AI CUSTOMER EXPERIENCE',
-      tagline: 'Make every customer interaction faster and smarter.',
+      title: 'Improve Customer Experience',
+      visual: 'chat' as const,
+      tagline: 'Respond faster, follow up automatically and support customers when your team is unavailable.',
       icon: Sparkles,
       examples: [
         'WhatsApp AI business assistants',
@@ -58,8 +62,9 @@ export const Solutions: React.FC<SolutionsProps> = ({ onOpenScanner, onOpenConta
     },
     {
       id: 'business-intelligence',
-      title: 'BUSINESS INTELLIGENCE',
-      tagline: 'Turn your business data into decisions.',
+      title: 'Turn Data Into Better Decisions',
+      visual: 'report' as const,
+      tagline: 'Get clearer reports and information without manually compiling everything.',
       icon: LineChart,
       examples: [
         'Live executive dashboards',
@@ -71,21 +76,6 @@ export const Solutions: React.FC<SolutionsProps> = ({ onOpenScanner, onOpenConta
       ctaText: 'Unlock Your Data →',
       details: 'Stop digging through static spreadsheets. Kre8Link builds automated pipelines that analyze transactional data, customer behavior, and operational trends to deliver plain-English AI summaries directly to leadership.'
     },
-    {
-      id: 'ai-transformation',
-      title: 'AI TRANSFORMATION',
-      tagline: 'We examine your business end to end and build high-impact AI systems.',
-      icon: Compass,
-      examples: [
-        'Comprehensive operational audit',
-        'Process bottleneck mapping',
-        'Custom AI architecture blueprint',
-        'Turnkey build & system implementation',
-        'Team training & continuous optimization'
-      ],
-      ctaText: 'Start an AI Transformation →',
-      details: 'For ambitious businesses ready for complete digital modernization. We evaluate your entire workflow ecosystem, identify top-ROI opportunities, design custom intelligent architecture, and manage execution from start to finish.'
-    }
   ];
 
   return (
@@ -93,13 +83,13 @@ export const Solutions: React.FC<SolutionsProps> = ({ onOpenScanner, onOpenConta
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <p className="text-xs font-mono uppercase tracking-widest text-[#F05323] font-bold">
-            Our Transformation Capabilities
+            How Kre8Link Helps
           </p>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-[#0A292C] tracking-tight leading-tight">
-            What can we transform?
+            We Build Systems That Make Your Business Better.
           </h2>
           <p className="text-base sm:text-lg text-slate-600 font-normal">
-            We don't sell generic software off the shelf. We build tailored intelligent systems for your specific business goals.
+            We use automation, AI and software behind the scenes to make everyday work simpler, faster and more connected.
           </p>
         </div>
 
@@ -121,6 +111,7 @@ export const Solutions: React.FC<SolutionsProps> = ({ onOpenScanner, onOpenConta
                 }`}
               >
                 <div>
+                  <SolutionVisual type={item.visual} />
                   <div className="flex items-center justify-between mb-6">
                     <div className="p-3 rounded-2xl bg-orange-50 border border-orange-100 text-[#F05323]">
                       <Icon className="w-6 h-6" />
@@ -133,11 +124,11 @@ export const Solutions: React.FC<SolutionsProps> = ({ onOpenScanner, onOpenConta
                   </h3>
 
                   <p className="text-sm text-slate-700 mb-6 font-medium leading-relaxed">
-                    "{item.tagline}"
+                    {item.tagline}
                   </p>
 
                   <div className="space-y-2 mb-8">
-                    <div className="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-2">Examples:</div>
+                    <div className="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-2">What this improves:</div>
                     {item.examples.map((ex, i) => (
                       <div key={i} className="flex items-center gap-2 text-xs text-slate-600">
                         <CheckCircle2 className="w-3.5 h-3.5 text-[#F05323] shrink-0" />
@@ -151,7 +142,7 @@ export const Solutions: React.FC<SolutionsProps> = ({ onOpenScanner, onOpenConta
                   onClick={() => setActiveModalSolution(item)}
                   className="w-full py-3 px-4 rounded-xl bg-slate-100 hover:bg-[#F05323] text-slate-800 hover:text-white text-xs font-semibold flex items-center justify-between transition-all group-hover:shadow-md cursor-pointer"
                 >
-                  <span>{item.ctaText}</span>
+                  <span>Explore this outcome</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </motion.div>
@@ -211,7 +202,7 @@ export const Solutions: React.FC<SolutionsProps> = ({ onOpenScanner, onOpenConta
                   }}
                   className="flex-1 py-3 rounded-xl bg-[#F05323] text-white font-semibold text-xs text-center shadow-md hover:bg-[#D94418] cursor-pointer"
                 >
-                  Find Opportunity in This Area →
+                  Get a Free Business Audit →
                 </button>
                 <button
                   onClick={() => {
@@ -220,7 +211,7 @@ export const Solutions: React.FC<SolutionsProps> = ({ onOpenScanner, onOpenConta
                   }}
                   className="px-4 py-3 rounded-xl border border-slate-200 text-slate-700 text-xs font-medium hover:bg-slate-50 cursor-pointer"
                 >
-                  Talk to Architect
+                  Book a Strategy Call
                 </button>
               </div>
             </motion.div>

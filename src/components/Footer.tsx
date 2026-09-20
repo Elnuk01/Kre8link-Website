@@ -187,7 +187,7 @@ CREATE TABLE IF NOT EXISTS contact_requests (
               <li><button onClick={onOpenScanner} className="hover:text-[#F05323] cursor-pointer">Business Automation</button></li>
               <li><button onClick={onOpenScanner} className="hover:text-[#F05323] cursor-pointer">AI Customer Experience</button></li>
               <li><button onClick={onOpenScanner} className="hover:text-[#F05323] cursor-pointer">Business Intelligence</button></li>
-              <li><button onClick={onOpenScanner} className="hover:text-[#F05323] cursor-pointer">AI Opportunity Scanner</button></li>
+                <li><button onClick={onOpenScanner} className="hover:text-[#F05323] cursor-pointer">Business Efficiency Audit</button></li>
             </ul>
           </div>
 
