@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, Sparkles, UserCheck, Cpu, Zap, Database, TrendingUp, CheckCircle2 } from 'lucide-react';
+import { HeroSystemVisual } from './HomepageVisuals';
 
 interface HeroProps {
   onOpenScanner: () => void;
@@ -54,7 +55,16 @@ export const Hero: React.FC<HeroProps> = ({ onOpenScanner, onOpenContact }) => {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-[#F05323]/05 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center max-w-4xl mx-auto space-y-6">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.9fr)]">
+        <div className="max-w-4xl space-y-6 text-center lg:text-left">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-xs font-mono uppercase tracking-widest text-[#F05323] font-bold"
+          >
+            Business Automation &amp; Smarter Systems
+          </motion.p>
           {/* Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -62,9 +72,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenScanner, onOpenContact }) => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-[#0A292C] leading-[1.08]"
           >
-            Turn your business into an{' '}
+            Make Your Business{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F05323] via-[#FF6B3D] to-[#D94418]">
-              AI-powered business.
+              Work Smarter.
             </span>
           </motion.h1>
 
@@ -73,10 +83,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenScanner, onOpenContact }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto font-normal leading-relaxed"
+            className="mx-auto max-w-2xl text-lg font-normal leading-relaxed text-slate-600 sm:text-xl lg:mx-0"
           >
-            We find the processes slowing your business down and build intelligent systems that
-            automate work, improve customer experiences, and help your team make better decisions.
+            We help you reduce repetitive work, respond to customers faster, and make better decisions
+            by automating and connecting the tools your team already uses.
           </motion.p>
 
           {/* CTAs */}
@@ -84,26 +94,33 @@ export const Hero: React.FC<HeroProps> = ({ onOpenScanner, onOpenContact }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="flex flex-col items-center justify-center gap-4 pt-2 sm:flex-row lg:justify-start"
           >
             <button
               onClick={onOpenScanner}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-full text-sm font-semibold text-white bg-[#F05323] hover:bg-[#D94418] transition-all duration-200 shadow-lg shadow-[#F05323]/25 hover:scale-[1.02] cursor-pointer"
             >
               <Sparkles className="w-4 h-4 text-orange-100" />
-              Find Your AI Opportunity
+              Get a Free Business Audit
               <ArrowRight className="w-4 h-4" />
             </button>
             <button
-              onClick={() => {
-                const el = document.getElementById('transformation');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onClick={onOpenContact}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full text-sm font-semibold text-slate-700 hover:text-[#0A292C] bg-white hover:bg-slate-50 border border-slate-200 transition-all duration-200 cursor-pointer shadow-sm"
             >
-              See What We Build
+              Book a Strategy Call
             </button>
           </motion.div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-xs text-slate-500 max-w-xl mx-auto leading-relaxed"
+          >
+            Answer a few questions about how your business works and get a personalised report showing where you can save time, automate work and improve operations.
+          </motion.p>
+        </div>
+        <HeroSystemVisual className="mt-2 lg:mt-0" />
         </div>
 
         {/* Animated Business System Visualization */}
@@ -118,7 +135,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenScanner, onOpenContact }) => {
               <div className="w-3 h-3 rounded-full bg-rose-400" />
               <div className="w-3 h-3 rounded-full bg-amber-400" />
               <div className="w-3 h-3 rounded-full bg-emerald-400" />
-              <span className="ml-2 text-xs font-mono text-slate-400">kre8link_system_architecture.v1</span>
+              <span className="ml-2 text-xs font-mono text-slate-400">kre8link_business_systems.v1</span>
             </div>
           </div>
 
@@ -174,7 +191,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenScanner, onOpenContact }) => {
               <CheckCircle2 className="w-4 h-4 text-teal-600" />
               <span>Automated end-to-end data flow with zero manual intervention required.</span>
             </div>
-            <span className="font-mono text-slate-400 text-[11px]">Kre8Link Architecture v3.4</span>
+            <span className="font-mono text-slate-400 text-[11px]">Connected business systems</span>
           </div>
         </motion.div>
       </div>

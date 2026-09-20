@@ -23,15 +23,15 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onOpenScanner, onOpenContact
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-50 border border-orange-200 text-[#F05323] text-xs font-mono font-bold">
             <Zap className="w-3.5 h-3.5" />
-            Ready for AI Transformation
+            A better way to work starts here
           </div>
 
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#0A292C] tracking-tight leading-tight max-w-4xl mx-auto">
-            What could your business do if the repetitive work disappeared?
+            Ready to Make Your Business Work Smarter?
           </h2>
 
           <p className="text-lg sm:text-xl text-slate-600 font-normal max-w-2xl mx-auto">
-            Let's identify the processes that are slowing you down and determine what AI can do about them.
+            Let's find the processes costing your business time and show you what can be improved.
           </p>
         </motion.div>
 
@@ -48,7 +48,7 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onOpenScanner, onOpenContact
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full text-sm font-semibold text-white bg-[#F05323] hover:bg-[#D94418] transition-all duration-200 shadow-xl shadow-[#F05323]/25 hover:scale-[1.02] cursor-pointer"
           >
             <Sparkles className="w-4 h-4 text-orange-100" />
-            <span>Find Your AI Opportunity</span>
+            <span>Get a Free Business Audit</span>
             <ArrowRight className="w-4 h-4" />
           </button>
 
@@ -57,18 +57,18 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onOpenScanner, onOpenContact
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-sm font-semibold text-slate-700 hover:text-[#0A292C] bg-white hover:bg-slate-50 border border-slate-200 transition-all cursor-pointer shadow-sm"
           >
             <MessageSquare className="w-4 h-4 text-slate-500" />
-            <span>Talk to Kre8Link</span>
+            <span>Book a Strategy Call</span>
           </button>
         </motion.div>
 
         <div className="pt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500 font-mono">
           <span className="flex items-center gap-1.5">
             <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" />
-            No generic proposals
+            Save time and reduce manual work
           </span>
           <span className="flex items-center gap-1.5">
             <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" />
-            Custom AI architecture
+            Practical improvements for your business
           </span>
           <span className="flex items-center gap-1.5">
             <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" />

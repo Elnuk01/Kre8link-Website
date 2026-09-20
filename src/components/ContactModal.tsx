@@ -111,7 +111,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, pre
 
               <h3 className="text-2xl font-bold text-[#0A292C]">Request Received</h3>
               <p className="text-xs text-slate-600 leading-relaxed max-w-sm mx-auto">
-                Thanks — we've received your message. A Kre8Link AI transformation architect will review your request and reach out within 24 hours.
+                Thanks — we've received your message. A Kre8Link specialist will review your request and reach out within 24 hours.
               </p>
 
               <button
@@ -126,11 +126,11 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, pre
               <div>
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 text-[#F05323] border border-orange-200 text-xs font-mono font-bold mb-2">
                   <Sparkles className="w-3.5 h-3.5" />
-                  Talk to Kre8Link
+                  Book a Strategy Call
                 </div>
-                <h3 className="text-2xl font-bold text-[#0A292C]">Find Your AI Opportunity</h3>
+                <h3 className="text-2xl font-bold text-[#0A292C]">Book a Strategy Call</h3>
                 <p className="text-xs text-slate-500">
-                  Tell us about your business goals. We'll map out a custom AI architecture proposal.
+                  Tell us about your business and the work you'd like to improve.
                 </p>
               </div>
 

@@ -1,36 +1,29 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Search, Compass, Cpu, TrendingUp } from 'lucide-react';
+import { Search, Compass, Cpu } from 'lucide-react';
 
 export const ProcessSection: React.FC = () => {
   const steps = [
     {
       number: '01',
-      title: 'Discover',
-      description: 'Understand the business and identify bottlenecks.',
-      details: 'We audit your current daily operations, shadow repetitive employee tasks, and map out where hours and revenue are being leaked.',
+      title: 'We Understand Your Business',
+      description: 'Tell us how your current processes work.',
+      details: 'We learn how your team handles daily work, customers and reporting.',
       icon: Search
     },
     {
       number: '02',
-      title: 'Design',
-      description: 'Map the process and determine where AI can create value.',
-      details: 'We model the ideal automated state, selecting the optimal combination of LLMs, API connectors, and security rules for your business.',
+      title: 'We Identify What Can Be Improved',
+      description: 'We find repetitive work, bottlenecks and missed opportunities.',
+      details: 'We focus on the changes that can save time, improve follow-up and make operations clearer.',
       icon: Compass
     },
     {
       number: '03',
-      title: 'Build',
-      description: 'Build the AI agents, automations and integrations.',
-      details: 'We write clean, production-grade agent scripts, set up database pipelines, and integrate with your existing CRM and communication platforms.',
+      title: 'We Build the Solution',
+      description: 'We automate and connect the right parts of your operation.',
+      details: 'We work with the tools you already use and make the improved process practical for your team.',
       icon: Cpu
-    },
-    {
-      number: '04',
-      title: 'Improve',
-      description: 'Measure performance, refine the system and scale.',
-      details: 'We monitor response accuracy, track hours saved, gather staff feedback, and continuously fine-tune prompt models as your business grows.',
-      icon: TrendingUp
     }
   ];
 
@@ -39,18 +32,17 @@ export const ProcessSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <p className="text-xs font-mono uppercase tracking-widest text-[#F05323] font-bold">
-            Our Implementation Methodology
+            How It Works
           </p>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-[#0A292C] tracking-tight leading-tight">
-            We don't start with AI. We start with the problem.
+            A simple path to a better-running business.
           </h2>
           <p className="text-base sm:text-lg text-slate-600 font-normal">
-            A disciplined, four-step engineering process designed to deliver high ROI without breaking existing business operations.
+            We start with how your business works today, then improve the areas that matter most.
           </p>
         </div>
 
-        {/* 4 Steps Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
           {steps.map((step, idx) => {
             const Icon = step.icon;
 

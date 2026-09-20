@@ -53,6 +53,46 @@
   transform: translateY(-2px);
 }
 
+.visual-float {
+  animation: visual-float 4s ease-in-out infinite;
+}
+
+.visual-float-delay {
+  animation: visual-float 4s ease-in-out 1.2s infinite;
+}
+
+.visual-pulse {
+  animation: visual-pulse 2s ease-in-out infinite;
+}
+
+.visual-wave {
+  animation: visual-wave 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes visual-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes visual-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+@keyframes visual-wave {
+  from { transform: scaleY(0.65); }
+  to { transform: scaleY(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .visual-float,
+  .visual-float-delay,
+  .visual-pulse,
+  .visual-wave {
+    animation: none;
+  }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
